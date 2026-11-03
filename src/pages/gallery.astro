@@ -21,7 +21,7 @@ import { gallery } from '../data/site';
       {
         gallery.map((item, i) => (
           <a
-            href={item.href}
+            href={item.href ?? item.src}
             target="_blank"
             rel="noopener noreferrer"
             class="group relative mb-3 block break-inside-avoid overflow-hidden rounded-xl border border-line bg-cream"

@@ -7,7 +7,6 @@ export const site = {
     'Изостудия в Жодино: живопись, графика, лепка и декоративное искусство для детей и взрослых. Онлайн-запись на занятия.',
   phone: '+375 (25) 718-72-57',
   phoneHref: 'tel:+375257187257',
-  email: 'info@izostudio.by',
   address: 'г. Жодино, ул. Деревянко, 3',
   addressNote: 'Дворец культуры',
   hours: [
@@ -89,7 +88,25 @@ export const teacher = {
   bio: 'Академическая живопись и графика. Более 10 лет преподавания детям и взрослым. Вдохновляет, поддерживает и помогает раскрыть потенциал каждому ученику.',
 };
 
-export const gallery = [
+export type GalleryItem = {
+  src: string;
+  alt: string;
+  href?: string;
+};
+
+export const gallery: GalleryItem[] = [
+  {
+    src: '/gallery/works/lisenok-zont.jpg',
+    alt: 'Лисёнок под зонтом — работа ученика изостудии Izo Studio в Жодино',
+  },
+  {
+    src: '/gallery/works/prividenie-mella.jpg',
+    alt: 'Привидение на метле — работа ученика изостудии Izo Studio в Жодино',
+  },
+  {
+    src: '/gallery/works/sova-pismo.jpg',
+    alt: 'Сова с письмом — работа ученика изостудии Izo Studio в Жодино',
+  },
   { src: '/gallery/preview1.jpg', href: 'https://www.instagram.com/p/DNyCnjM0Nwv/', alt: 'Работа ученика изостудии Izo Studio — живопись' },
   { src: '/gallery/preview2.jpg', href: 'https://www.instagram.com/izo_studia_zhodino/p/DNsaTHzULTI/', alt: 'Работа ученика изостудии Izo Studio — натюрморт' },
   { src: '/gallery/preview3.jpg', href: 'https://www.instagram.com/izo_studia_zhodino/p/DN5R6IrCN51/', alt: 'Работа ученика изостудии Izo Studio — графика' },
