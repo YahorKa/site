@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["base_url","compose_path","fetch_base_url"]};

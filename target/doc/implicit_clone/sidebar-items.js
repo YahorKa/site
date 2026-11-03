@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":["ImplicitClone"],"macro":["imap_deconstruct"],"mod":["sync","unsync"],"trait":["ImplicitClone"]};

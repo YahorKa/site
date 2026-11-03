@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Yew Framework - API Documentation"><title>yew - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="yew" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../static.files/storage-4e99c027.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button><a class="logo-container" href="../yew/index.html"><img src="https://yew.rs/img/logo.png" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../yew/index.html"><img src="https://yew.rs/img/logo.png" alt="logo"></a><h2><a href="../yew/index.html">yew</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#yew-framework---api-documentation" title="Yew Framework - API Documentation">Yew Framework - API Documentation</a><ul><li><a href="#supported-targets-client-side-rendering" title="Supported Targets (Client-Side Rendering)">Supported Targets (Client-Side Rendering)</a></li><li><a href="#note" title="Note">Note</a></li><li><a href="#supported-features" title="Supported Features:">Supported Features:</a></li><li><a href="#example" title="Example">Example</a></li></ul></li></ul><h3><a href="#modules">Crate Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#macros" title="Macros">Macros</a></li><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#functions" title="Functions">Functions</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>yew</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/yew/lib.rs.html#1-346">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="yew-framework---api-documentation"><a class="doc-anchor" href="#yew-framework---api-documentation">§</a>Yew Framework - API Documentation</h2>
+<p>Yew is a modern Rust framework for creating multi-threaded front-end web apps using WebAssembly</p>
+<ul>
+<li>Features a macro for declaring interactive HTML with Rust expressions. Developers who have
+experience using JSX in React should feel quite at home when using Yew.</li>
+<li>Achieves high performance by minimizing DOM API calls for each page render and by making it
+easy to offload processing to background web workers.</li>
+<li>Supports JavaScript interoperability, allowing developers to leverage NPM packages and
+integrate with existing JavaScript applications.</li>
+</ul>
+<h4 id="supported-targets-client-side-rendering"><a class="doc-anchor" href="#supported-targets-client-side-rendering">§</a>Supported Targets (Client-Side Rendering)</h4>
+<ul>
+<li><code>wasm32-unknown-unknown</code></li>
+</ul>
+<h4 id="note"><a class="doc-anchor" href="#note">§</a>Note</h4>
+<p>Server-Side Rendering should work on all targets when feature <code>ssr</code> is enabled.</p>
+<h4 id="supported-features"><a class="doc-anchor" href="#supported-features">§</a>Supported Features:</h4>
+<ul>
+<li><code>csr</code>: Enables Client-side Rendering support and <a href="struct.Renderer.html" title="struct yew::Renderer"><code>Renderer</code></a>. Only enable this feature if you
+are making a Yew application (not a library).</li>
+<li><code>ssr</code>: Enables Server-side Rendering support and [<code>ServerRenderer</code>].</li>
+<li><code>hydration</code>: Enables Hydration support.</li>
+</ul>
+<h3 id="example"><a class="doc-anchor" href="#example">§</a>Example</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>yew::prelude::<span class="kw-2">*</span>;
+
+<span class="kw">enum </span>Msg {
+    AddOne,
+}
+
+<span class="kw">struct </span>App {
+    value: i64,
+}
+
+<span class="kw">impl </span>Component <span class="kw">for </span>App {
+    <span class="kw">type </span>Message = Msg;
+    <span class="kw">type </span>Properties = ();
+
+    <span class="kw">fn </span>create(ctx: <span class="kw-2">&amp;</span>Context&lt;<span class="self">Self</span>&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ value: <span class="number">0 </span>}
+    }
+
+    <span class="kw">fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _ctx: <span class="kw-2">&amp;</span>Context&lt;<span class="self">Self</span>&gt;, msg: <span class="self">Self</span>::Message) -&gt; bool {
+        <span class="kw">match </span>msg {
+            Msg::AddOne =&gt; {
+                <span class="self">self</span>.value += <span class="number">1</span>;
+                <span class="bool-val">true
+            </span>}
+        }
+    }
+
+    <span class="kw">fn </span>view(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: <span class="kw-2">&amp;</span>Context&lt;<span class="self">Self</span>&gt;) -&gt; Html {
+        <span class="macro">html!</span> {
+            &lt;div&gt;
+                &lt;button onclick={ctx.link().callback(|<span class="kw">_</span>| Msg::AddOne)}&gt;{ <span class="string">"+1" </span>}&lt;/button&gt;
+                &lt;p&gt;{ <span class="self">self</span>.value }&lt;/p&gt;
+            &lt;/div&gt;
+        }
+    }
+}
+
+<span class="kw">fn </span>main() {
+    yew::Renderer::&lt;App&gt;::new().render();
+}</code></pre></div>
+</div></details><h2 id="reexports" class="section-header">Re-exports<a href="#reexports" class="anchor">§</a></h2><dl class="item-table reexports"><dt><code>pub use self::<a class="mod" href="prelude/index.html" title="mod yew::prelude">prelude</a>::*;</code></dt></dl><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="callback/index.html" title="mod yew::callback">callback</a></dt><dd>This module contains data types for interacting with <code>Scope</code>s.</dd><dt><a class="mod" href="context/index.html" title="mod yew::context">context</a></dt><dd>This module defines the <code>ContextProvider</code> component.</dd><dt><a class="mod" href="events/index.html" title="mod yew::events">events</a></dt><dd>The module that contains all events available in the framework.</dd><dt><a class="mod" href="functional/index.html" title="mod yew::functional">functional</a></dt><dd>Function components are a simplified version of normal components.
+They consist of a single function annotated with the attribute <code>#[function_component]</code>
+that receives props and determines what should be rendered by returning <a href="html/type.Html.html" title="type yew::html::Html"><code>Html</code></a>.</dd><dt><a class="mod" href="html/index.html" title="mod yew::html">html</a></dt><dd>The main html module which defines components, listeners, and class helpers.</dd><dt><a class="mod" href="macros/index.html" title="mod yew::macros">macros</a></dt><dd>This module contains macros which implements html! macro and JSX-like templates</dd><dt><a class="mod" href="platform/index.html" title="mod yew::platform">platform</a></dt><dd>Yew’s compatibility between JavaScript Runtime and Native Runtimes.</dd><dt><a class="mod" href="prelude/index.html" title="mod yew::prelude">prelude</a></dt><dd>The Yew Prelude</dd><dt><a class="mod" href="scheduler/index.html" title="mod yew::scheduler">scheduler</a></dt><dd>This module contains a scheduler.</dd><dt><a class="mod" href="suspense/index.html" title="mod yew::suspense">suspense</a></dt><dd>This module provides suspense support.</dd><dt><a class="mod" href="utils/index.html" title="mod yew::utils">utils</a></dt><dd>This module contains useful utilities to get information about the current document.</dd><dt><a class="mod" href="virtual_dom/index.html" title="mod yew::virtual_dom">virtual_<wbr>dom</a></dt><dd>This module contains Yew’s implementation of a reactive virtual DOM.</dd></dl><h2 id="macros" class="section-header">Macros<a href="#macros" class="anchor">§</a></h2><dl class="item-table"><dt><a class="macro" href="macro.classes.html" title="macro yew::classes">classes</a></dt><dd>This macro provides a convenient way to create <a href="html/struct.Classes.html" title="struct yew::html::Classes"><code>Classes</code></a>.</dd><dt><a class="macro" href="macro.html.html" title="macro yew::html">html</a></dt><dd>This macro implements JSX-like templates.</dd><dt><a class="macro" href="macro.html_nested.html" title="macro yew::html_nested">html_<wbr>nested</a></dt><dd>This macro is similar to <a href="./macro.html.html"><code>html!</code></a>, but preserves the component type instead
+of wrapping it in <a href="./html/type.Html.html"><code>Html</code></a>.</dd><dt><a class="macro" href="macro.props.html" title="macro yew::props">props</a></dt><dd>Build <a href="./html/trait.Properties.html"><code>Properties</code></a> outside of the <a href="./macro.html.html"><code>html!</code></a> macro.</dd></dl><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.AppHandle.html" title="struct yew::AppHandle">AppHandle</a></dt><dd>An instance of an application.</dd><dt><a class="struct" href="struct.Renderer.html" title="struct yew::Renderer">Renderer</a></dt><dd>The Yew Renderer.</dd></dl><h2 id="functions" class="section-header">Functions<a href="#functions" class="anchor">§</a></h2><dl class="item-table"><dt><a class="fn" href="fn.set_custom_panic_hook.html" title="fn yew::set_custom_panic_hook">set_<wbr>custom_<wbr>panic_<wbr>hook</a></dt><dd>Set a custom panic hook.
+Unless a panic hook is set through this function, Yew will
+overwrite any existing panic hook when an application is rendered with <a href="struct.Renderer.html" title="struct yew::Renderer">Renderer</a>.</dd></dl></section></div></main></body></html>

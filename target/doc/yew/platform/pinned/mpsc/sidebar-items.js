@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["unbounded"],"struct":["SendError","TryRecvError","TrySendError","UnboundedReceiver","UnboundedSender"]};

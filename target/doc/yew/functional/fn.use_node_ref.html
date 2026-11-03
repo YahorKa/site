@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="This hook is used for obtaining a `NodeRef`. It persists across renders."><title>use_node_ref in yew::functional - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="yew" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button><a class="logo-container" href="../../yew/index.html"><img src="https://yew.rs/img/logo.png" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../../yew/index.html"><img src="https://yew.rs/img/logo.png" alt="logo"></a><h2><a href="../../yew/index.html">yew</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">use_<wbr>node_<wbr>ref</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example" title="Example">Example</a></li><li><a href="#tip" title="Tip">Tip</a></li><li><a href="#note" title="Note">Note</a></li></ul></section><div id="rustdoc-modnav"><h2><a href="index.html">In yew::<wbr>functional</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">yew</a>::<wbr><a href="index.html">functional</a></div><h1>Function <span class="fn">use_node_ref</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/yew/functional/hooks/use_ref.rs.html#130">Source</a> </span></div><pre class="rust item-decl"><code>pub fn use_node_ref&lt;'hook&gt;() -&gt; impl 'hook + <a class="trait" href="trait.Hook.html" title="trait yew::functional::Hook">Hook</a>&lt;Output = <a class="struct" href="../html/struct.NodeRef.html" title="struct yew::html::NodeRef">NodeRef</a>&gt;</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>This hook is used for obtaining a <a href="../html/struct.NodeRef.html" title="struct yew::html::NodeRef"><code>NodeRef</code></a>.
+It persists across renders.</p>
+<p>The <code>ref</code> attribute can be used to attach the <a href="../html/struct.NodeRef.html" title="struct yew::html::NodeRef"><code>NodeRef</code></a> to an HTML element. In callbacks,
+you can then get the DOM <code>Element</code> that the <code>ref</code> is attached to.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>wasm_bindgen::prelude::Closure;
+<span class="kw">use </span>wasm_bindgen::JsCast;
+<span class="kw">use </span>web_sys::{Event, HtmlElement};
+<span class="kw">use </span>yew::{function_component, html, use_effect_with, use_node_ref, Html};
+
+<span class="attr">#[function_component(UseNodeRef)]
+</span><span class="kw">pub fn </span>node_ref_hook() -&gt; Html {
+    <span class="kw">let </span>div_ref = use_node_ref();
+
+    {
+        <span class="kw">let </span>div_ref = div_ref.clone();
+
+        use_effect_with(div_ref, |div_ref| {
+            <span class="kw">let </span>div = div_ref
+                .cast::&lt;HtmlElement&gt;()
+                .expect(<span class="string">"div_ref not attached to div element"</span>);
+
+            <span class="kw">let </span>listener = Closure::&lt;<span class="kw">dyn </span>Fn(Event)&gt;::wrap(Box::new(|<span class="kw">_</span>| {
+                web_sys::console::log_1(<span class="kw-2">&amp;</span><span class="string">"Clicked!"</span>.into());
+            }));
+
+            div.add_event_listener_with_callback(<span class="string">"click"</span>, listener.as_ref().unchecked_ref())
+                .unwrap();
+
+            <span class="kw">move </span>|| {
+                div.remove_event_listener_with_callback(
+                    <span class="string">"click"</span>,
+                    listener.as_ref().unchecked_ref(),
+                )
+                .unwrap();
+            }
+        });
+    }
+
+    <span class="macro">html!</span> {
+        &lt;div <span class="kw-2">ref</span>={div_ref}&gt;
+            { <span class="string">"Click me and watch the console log!" </span>}
+        &lt;/div&gt;
+    }
+}</code></pre></div>
+<h2 id="tip"><a class="doc-anchor" href="#tip">§</a>Tip</h2>
+<p>When conditionally rendering elements you can use <code>NodeRef</code> in conjunction with
+<code>use_effect_with</code> to perform actions each time an element is rendered and just before the
+component where the hook is used in is going to be removed from the DOM.</p>
+<h2 id="note"><a class="doc-anchor" href="#note">§</a>Note</h2>
+<p>When used in function components and hooks, this hook is equivalent to:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub fn </span>use_node_ref() -&gt; NodeRef {
+    <span class="comment">/* implementation omitted */
+</span>}
+</code></pre></div>
+</div></details></section></div></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":["Properties"],"macro":["classes","html","html_nested"],"struct":["AppHandle"]};

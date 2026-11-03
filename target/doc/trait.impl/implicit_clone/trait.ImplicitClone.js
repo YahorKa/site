@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["implicit_clone",[]],["yew",[["impl <a class=\"trait\" href=\"yew/html/trait.ImplicitClone.html\" title=\"trait yew::html::ImplicitClone\">ImplicitClone</a> for <a class=\"struct\" href=\"yew/html/struct.Classes.html\" title=\"struct yew::html::Classes\">Classes</a>"],["impl <a class=\"trait\" href=\"yew/html/trait.ImplicitClone.html\" title=\"trait yew::html::ImplicitClone\">ImplicitClone</a> for <a class=\"struct\" href=\"yew/html/struct.NodeRef.html\" title=\"struct yew::html::NodeRef\">NodeRef</a>"],["impl <a class=\"trait\" href=\"yew/html/trait.ImplicitClone.html\" title=\"trait yew::html::ImplicitClone\">ImplicitClone</a> for <a class=\"struct\" href=\"yew/virtual_dom/struct.Key.html\" title=\"struct yew::virtual_dom::Key\">Key</a>"],["impl&lt;Comp: <a class=\"trait\" href=\"yew/html/trait.Component.html\" title=\"trait yew::html::Component\">Component</a>&gt; <a class=\"trait\" href=\"yew/html/trait.ImplicitClone.html\" title=\"trait yew::html::ImplicitClone\">ImplicitClone</a> for <a class=\"struct\" href=\"yew/html/struct.Scope.html\" title=\"struct yew::html::Scope\">Scope</a>&lt;Comp&gt;"],["impl&lt;IN, OUT&gt; <a class=\"trait\" href=\"yew/html/trait.ImplicitClone.html\" title=\"trait yew::html::ImplicitClone\">ImplicitClone</a> for <a class=\"struct\" href=\"yew/callback/struct.Callback.html\" title=\"struct yew::callback::Callback\">Callback</a>&lt;IN, OUT&gt;"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[21,1381]}

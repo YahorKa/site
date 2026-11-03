@@ -1,0 +1,1 @@
+searchState.loadedDescShard("yew_macro", 0, "This crate provides Yew’s procedural macro <code>html!</code> which …")

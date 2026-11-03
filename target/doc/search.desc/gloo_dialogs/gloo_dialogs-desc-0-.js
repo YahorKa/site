@@ -1,0 +1,1 @@
+searchState.loadedDescShard("gloo_dialogs", 0, "This crate provides wrapper for <code>alert</code>, <code>prompt</code> and <code>confirm</code> …\nCalls the alert function.\nCalls the confirm function.\nCalls the <code>prompt</code> function.")

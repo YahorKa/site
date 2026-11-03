@@ -1,0 +1,10 @@
+/Users/egorkochkin/projects/web/target/debug/deps/gloo_console-f619f7271de1ef7c.d: /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/lib.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/console_dbg.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/counter.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/externs.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/macros.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/timer.rs
+
+/Users/egorkochkin/projects/web/target/debug/deps/libgloo_console-f619f7271de1ef7c.rmeta: /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/lib.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/console_dbg.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/counter.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/externs.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/macros.rs /Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/timer.rs
+
+/Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/lib.rs:
+/Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/console_dbg.rs:
+/Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/counter.rs:
+/Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/externs.rs:
+/Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/macros.rs:
+/Users/egorkochkin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/gloo-console-0.3.0/src/timer.rs:

@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="An asynchronous runtime compatible with WebAssembly and non-WebAssembly targets."><title>prokio - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="prokio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../static.files/storage-4e99c027.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../prokio/index.html">prokio</a><span class="version">0.1.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#rationale" title="Rationale">Rationale</a></li><li><a href="#implementation" title="Implementation">Implementation</a></li><li><a href="#runtime-backend" title="Runtime Backend">Runtime Backend</a></li></ul><h3><a href="#modules">Crate Items</a></h3><ul class="block"><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#functions" title="Functions">Functions</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>prokio</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/prokio/lib.rs.html#1-67">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>An asynchronous runtime compatible with WebAssembly and non-WebAssembly targets.</p>
+<h2 id="rationale"><a class="doc-anchor" href="#rationale">§</a>Rationale</h2>
+<p>When designing components and libraries that works on both WebAssembly targets backed by
+JavaScript Runtime and non-WebAssembly targets with Native Runtimes. Developers usually face
+challenges that requires applying multiple feature flags throughout their application:</p>
+<ol>
+<li>Select I/O and timers that works with the target runtime.</li>
+<li>Native Runtimes usually require <code>Send</code> futures and WebAssembly types are usually <code>!Send</code>.</li>
+</ol>
+<h2 id="implementation"><a class="doc-anchor" href="#implementation">§</a>Implementation</h2>
+<p>To alleviate these issues, Prokio implements a single-threaded runtime that executes <code>?Send</code>
+(<code>Send</code> or <code>!Send</code>) futures.</p>
+<p>On platforms with multi-threading support, prokio spawns multiple independent runtimes
+proportional to the CPU core number. When tasks are spawned with a runtime handle, it will
+randomly select a worker thread from the internal pool. All tasks spawned with <code>spawn_local</code>
+will run on the same thread as the thread the task was running. When the runtime runs in a
+WebAssembly target, all tasks will be scheduled on the main thread.</p>
+<p>This runtime is designed in favour of IO-bounded workload with similar runtime cost.
+When running I/O workloads, it would produce a slightly better performance as tasks are
+never moved to another thread. However, If a worker thread is busy,
+other threads will not be able to steal tasks scheduled on the busy thread.
+When you have a CPU-bounded task where CPU time is significantly
+more expensive, it should be spawned with a dedicated thread (or Web Worker) and communicates
+with the application using channels.</p>
+<p>Prokio provides the following components:</p>
+<ol>
+<li>A Task Scheduler that is capable of running non-Send tasks.</li>
+<li>A Timer that is compatible with the scheduler backend.</li>
+<li>Task Synchronisation Mechanisms.</li>
+</ol>
+<h2 id="runtime-backend"><a class="doc-anchor" href="#runtime-backend">§</a>Runtime Backend</h2>
+<p>Prokio runtime is implemented with different runtimes depending on the target platform and can
+use all features (timers / IO / task synchronisation) from the selected native runtime:</p>
+<ul>
+<li><code>wasm-bindgen-futures</code> (WebAssembly targets)</li>
+<li><code>tokio</code> (non-WebAssembly targets)</li>
+</ul>
+</div></details><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="fmt/index.html" title="mod prokio::fmt">fmt</a></dt><dd>Asynchronous utilities to work with <code>String</code>s.</dd><dt><a class="mod" href="pinned/index.html" title="mod prokio::pinned">pinned</a></dt><dd>Task synchronisation primitives for pinned tasks.</dd><dt><a class="mod" href="time/index.html" title="mod prokio::time">time</a></dt><dd>Utilities for bridging time and tasks.</dd></dl><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.LocalHandle.html" title="struct prokio::LocalHandle">Local<wbr>Handle</a></dt><dd>A Local Runtime Handle.</dd><dt><a class="struct" href="struct.Runtime.html" title="struct prokio::Runtime">Runtime</a></dt><dd>An asynchronous Runtime.</dd><dt><a class="struct" href="struct.RuntimeBuilder.html" title="struct prokio::RuntimeBuilder">Runtime<wbr>Builder</a></dt><dd>A Runtime Builder.</dd></dl><h2 id="functions" class="section-header">Functions<a href="#functions" class="anchor">§</a></h2><dl class="item-table"><dt><a class="fn" href="fn.spawn_local.html" title="fn prokio::spawn_local">spawn_<wbr>local</a></dt><dd>Spawns a task on current thread.</dd></dl></section></div></main></body></html>

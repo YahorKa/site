@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["NavigatorKind"],"struct":["Navigator"],"type":["NavigationError","NavigationResult"]};

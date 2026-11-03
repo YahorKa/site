@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="This macro is similar to `html!`, but preserves the component type instead of wrapping it in `Html`."><title>html_nested in yew::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="yew" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button><a class="logo-container" href="../../yew/index.html"><img src="https://yew.rs/img/logo.png" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../../yew/index.html"><img src="https://yew.rs/img/logo.png" alt="logo"></a><h2><a href="../../yew/index.html">yew</a><span class="version">0.21.0</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"><h2><a href="index.html">In yew::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">yew</a>::<wbr><a href="index.html">prelude</a></div><h1>Macro <span class="macro">html_nested</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/yew_macro/lib.rs.html#114">Source</a> </span></div><pre class="rust item-decl"><code>html_nested!() { <span class="comment">/* proc-macro */</span> }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>This macro is similar to <a href="./macro.html.html"><code>html!</code></a>, but preserves the component type instead
+of wrapping it in <a href="./html/type.Html.html"><code>Html</code></a>.</p>
+<p>That macro is useful when, for example, in a typical implementation of a list
+component (let’s assume it’s called <code>List</code>).
+In a typical implementation you might find two component types – <code>List</code> and <code>ListItem</code>.
+Only <code>ListItem</code> components are allowed to be children of List`.</p>
+<p>You can find an example implementation of this in the <a href="https://github.com/yewstack/yew/tree/master/examples/nested_list"><code>nested_list</code></a> example.
+That example shows, how to create static lists with their children.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>yew::html::ChildrenRenderer;
+<span class="kw">use </span>yew::virtual_dom::VChild;
+
+<span class="attr">#[derive(Clone, Properties, PartialEq)]
+</span><span class="kw">struct </span>ListProps {
+    children: ChildrenRenderer&lt;ListItem&gt;,
+}
+
+<span class="kw">struct </span>List;
+<span class="kw">impl </span>Component <span class="kw">for </span>List {
+    <span class="kw">type </span>Properties = ListProps;
+    <span class="comment">// ...
+</span>}
+
+<span class="attr">#[derive(Clone, PartialEq)]
+</span><span class="kw">struct </span>ListItem;
+<span class="kw">impl </span>Component <span class="kw">for </span>ListItem {
+    <span class="comment">// ...
+</span>}
+
+<span class="comment">// Required for ChildrenRenderer
+</span><span class="kw">impl </span>From&lt;VChild&lt;ListItem&gt;&gt; <span class="kw">for </span>ListItem {
+    <span class="kw">fn </span>from(child: VChild&lt;ListItem&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self
+    </span>}
+}
+
+<span class="kw">impl </span>Into&lt;Html&gt; <span class="kw">for </span>ListItem {
+    <span class="kw">fn </span>into(<span class="self">self</span>) -&gt; Html {
+        <span class="macro">html!</span> { &lt;<span class="self">self </span>/&gt; }
+    }
+}
+<span class="comment">// You can use `List` with nested `ListItem` components.
+// Using any other kind of element would result in a compile error.
+</span><span class="macro">html!</span> {
+  &lt;List&gt;
+    &lt;ListItem/&gt;
+    &lt;ListItem/&gt;
+    &lt;ListItem/&gt;
+  &lt;/List&gt;
+}
+<span class="comment">// In many cases you might want to create the content dynamically.
+// To do this, you can use the following code:
+</span><span class="macro">html!</span> {
+  &lt;List&gt;
+    { <span class="kw">for </span>some_iter.map(|<span class="kw">_</span>| <span class="macro">html_nested!</span>{ &lt;ListItem/&gt; }) }
+  &lt;/List&gt;
+}</code></pre></div>
+<p>If you used the <a href="./macro.html.html"><code>html!</code></a> macro instead of <code>html_nested!</code>, the code would
+not compile because we explicitly indicated to the compiler that <code>List</code>
+can only contain elements of type <code>ListItem</code> using <a href="./html/struct.ChildrenRenderer.html"><code>ChildrenRenderer&lt;ListItem&gt;</code></a>,
+while <a href="./macro.html.html"><code>html!</code></a> creates items of type <a href="./html/type.Html.html"><code>Html</code></a>.</p>
+</div></details></section></div></main></body></html>

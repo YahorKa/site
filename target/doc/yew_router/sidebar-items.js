@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":["Routable"],"mod":["components","history","hooks","navigator","prelude","router","scope_ext","switch","utils"],"struct":["AnyRoute"],"trait":["Routable"]};

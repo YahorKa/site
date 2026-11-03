@@ -1,0 +1,182 @@
+/* src/styles/main.css */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+html {
+  font-size: 16px;
+}
+
+footer {
+  background-color: #F7F4F0;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.home-page {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  font-family: sans-serif;
+  color: #333;
+}
+
+.home-page h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.home-page section {
+  margin-bottom: 2rem;
+}
+
+.home-page ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.home-page button {
+  background-color: #4caf50;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.home-page button:hover {
+  background-color: #43a047;
+}
+
+.form-page {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.enroll-form label {
+  display: block;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.enroll-form input,
+.enroll-form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.enroll-form button {
+  background-color: #4F9167;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.enroll-form button:hover {
+  background-color: #3e7a56;
+}
+
+.art-background-left,
+.art-background-right {
+position: absolute;
+  top: 0;
+  width: 500px;
+  height: 100vh;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.3;
+}
+@media (max-width: 768px) {
+  .art-background-left,
+  .art-background-right {
+    width: 200px; /* или меньше, если нужно */
+    height: 100vh;
+    opacity: 0.2; /* можно чуть приглушить */
+  }
+}
+
+@media (max-width: 480px) {
+  .art-background-left,
+  .art-background-right {
+    width: 120px;
+    opacity: 0.15;
+  }
+}
+
+.art-background-left {
+  left: 20px;
+}
+
+.art-background-right {
+  right: 20px;
+}
+
+.art-background-left img,
+.art-background-right img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+.layout-row {
+  display: flex;
+  align-items: center; /* вертикальное выравнивание */
+  gap: 3rem;
+  padding: 2rem;
+  flex-wrap: wrap; /* чтобы на узких экранах не ломалось */
+}
+
+.main-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.ad-image {
+  flex: 0 0 auto;
+  min-width: 200px;
+  max-width: 300px;
+}
+.ad-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+.preview-gallery {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.preview-gallery img {
+  max-width: 30%;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}

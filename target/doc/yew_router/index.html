@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Provides routing faculties using the browser history API to build Single Page Applications (SPAs) using Yew web framework."><title>yew_router - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-84e720fa.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="yew_router" data-themes="" data-resource-suffix="" data-rustdoc-version="1.89.0 (29483883e 2025-08-04)" data-channel="1.89.0" data-search-js="search-92309212.js" data-settings-js="settings-5514c975.js" ><script src="../static.files/storage-4e99c027.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-fd3af306.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../yew_router/index.html">yew_<wbr>router</a><span class="version">0.18.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#usage" title="Usage">Usage</a></li><li><a href="#internals" title="Internals">Internals</a></li><li><a href="#state" title="State">State</a></li></ul><h3><a href="#reexports">Crate Items</a></h3><ul class="block"><li><a href="#reexports" title="Re-exports">Re-exports</a></li><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#traits" title="Traits">Traits</a></li><li><a href="#derives" title="Derive Macros">Derive Macros</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>yew_router</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/yew_router/lib.rs.html#1-106">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Provides routing faculties using the browser history API to build
+Single Page Applications (SPAs) using <a href="https://yew.rs">Yew web framework</a>.</p>
+<h2 id="usage"><a class="doc-anchor" href="#usage">§</a>Usage</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>yew::functional::<span class="kw-2">*</span>;
+<span class="kw">use </span>yew::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>yew_router::prelude::<span class="kw-2">*</span>;
+
+<span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Routable)]
+</span><span class="kw">enum </span>Route {
+    <span class="attr">#[at(<span class="string">"/"</span>)]
+    </span>Home,
+    <span class="attr">#[at(<span class="string">"/secure"</span>)]
+    </span>Secure,
+    <span class="attr">#[not_found]
+    #[at(<span class="string">"/404"</span>)]
+    </span>NotFound,
+}
+
+<span class="attr">#[function_component(Secure)]
+</span><span class="kw">fn </span>secure() -&gt; Html {
+    <span class="kw">let </span>navigator = use_navigator().unwrap();
+
+    <span class="kw">let </span>onclick_callback = Callback::from(<span class="kw">move </span>|<span class="kw">_</span>| navigator.push(<span class="kw-2">&amp;</span>Route::Home));
+    <span class="macro">html!</span> {
+        &lt;div&gt;
+            &lt;h1&gt;{ <span class="string">"Secure" </span>}&lt;/h1&gt;
+            &lt;button onclick={onclick_callback}&gt;{ <span class="string">"Go Home" </span>}&lt;/button&gt;
+        &lt;/div&gt;
+    }
+}
+
+<span class="attr">#[function_component(Main)]
+</span><span class="kw">fn </span>app() -&gt; Html {
+    <span class="macro">html!</span> {
+        &lt;BrowserRouter&gt;
+            &lt;Switch&lt;Route&gt; render={switch} /&gt;
+        &lt;/BrowserRouter&gt;
+    }
+}
+
+<span class="kw">fn </span>switch(routes: Route) -&gt; Html {
+    <span class="kw">match </span>routes {
+        Route::Home =&gt; <span class="macro">html!</span> { &lt;h1&gt;{ <span class="string">"Home" </span>}&lt;/h1&gt; },
+        Route::Secure =&gt; <span class="macro">html!</span> {
+            &lt;Secure /&gt;
+        },
+        Route::NotFound =&gt; <span class="macro">html!</span> { &lt;h1&gt;{ <span class="string">"404" </span>}&lt;/h1&gt; },
+    }
+}</code></pre></div>
+<h2 id="internals"><a class="doc-anchor" href="#internals">§</a>Internals</h2>
+<p>The router registers itself as a context provider and makes location information and navigator
+available via <a href="hooks/index.html" title="mod yew_router::hooks"><code>hooks</code></a> or <a href="scope_ext/trait.RouterScopeExt.html" title="trait yew_router::scope_ext::RouterScopeExt"><code>RouterScopeExt</code></a>.</p>
+<h2 id="state"><a class="doc-anchor" href="#state">§</a>State</h2>
+<p>The <a href="history/struct.Location.html" title="struct yew_router::history::Location"><code>Location</code></a> API has a way to access / store state associated with
+session history. Please consult <a href="history/struct.Location.html#method.state" title="method yew_router::history::Location::state"><code>location.state()</code></a> for
+detailed usage.</p>
+</div></details><h2 id="reexports" class="section-header">Re-exports<a href="#reexports" class="anchor">§</a></h2><dl class="item-table reexports"><dt id="reexport.BrowserRouter"><code>pub use router::<a class="struct" href="router/struct.BrowserRouter.html" title="struct yew_router::router::BrowserRouter">BrowserRouter</a>;</code></dt><dt id="reexport.HashRouter"><code>pub use router::<a class="struct" href="router/struct.HashRouter.html" title="struct yew_router::router::HashRouter">HashRouter</a>;</code></dt><dt id="reexport.Router"><code>pub use router::<a class="struct" href="router/struct.Router.html" title="struct yew_router::router::Router">Router</a>;</code></dt><dt id="reexport.Switch"><code>pub use switch::<a class="struct" href="switch/struct.Switch.html" title="struct yew_router::switch::Switch">Switch</a>;</code></dt></dl><h2 id="modules" class="section-header">Modules<a href="#modules" class="anchor">§</a></h2><dl class="item-table"><dt><a class="mod" href="components/index.html" title="mod yew_router::components">components</a></dt><dd>Components to interface with <a href="router/struct.Router.html" title="struct yew_router::router::Router">Router</a>.</dd><dt><a class="mod" href="history/index.html" title="mod yew_router::history">history</a></dt><dd>A module that provides universal session history and location information.</dd><dt><a class="mod" href="hooks/index.html" title="mod yew_router::hooks">hooks</a></dt><dd>Hooks to access router state and navigate between pages.</dd><dt><a class="mod" href="navigator/index.html" title="mod yew_router::navigator">navigator</a></dt><dt><a class="mod" href="prelude/index.html" title="mod yew_router::prelude">prelude</a></dt><dd>Prelude module to be imported when working with <code>yew-router</code>.</dd><dt><a class="mod" href="router/index.html" title="mod yew_router::router">router</a></dt><dd>Router Component.</dd><dt><a class="mod" href="scope_ext/index.html" title="mod yew_router::scope_ext">scope_<wbr>ext</a></dt><dt><a class="mod" href="switch/index.html" title="mod yew_router::switch">switch</a></dt><dd>The <a href="switch/struct.Switch.html" title="struct yew_router::switch::Switch"><code>Switch</code></a> Component.</dd><dt><a class="mod" href="utils/index.html" title="mod yew_router::utils">utils</a></dt></dl><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.AnyRoute.html" title="struct yew_router::AnyRoute">AnyRoute</a></dt><dd>A special route that accepts any route.</dd></dl><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><dl class="item-table"><dt><a class="trait" href="trait.Routable.html" title="trait yew_router::Routable">Routable</a></dt><dd>Marks an <code>enum</code> as routable.</dd></dl><h2 id="derives" class="section-header">Derive Macros<a href="#derives" class="anchor">§</a></h2><dl class="item-table"><dt><a class="derive" href="derive.Routable.html" title="derive yew_router::Routable">Routable</a></dt><dd>Derive macro used to mark an enum as Routable.</dd></dl></section></div></main></body></html>

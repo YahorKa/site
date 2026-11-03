@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["use_future","use_future_with"],"struct":["Suspense","SuspenseProps","Suspension","SuspensionHandle","UseFutureHandle"],"type":["SuspensionResult"]};

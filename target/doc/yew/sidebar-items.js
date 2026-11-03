@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["set_custom_panic_hook"],"macro":["classes","html","html_nested","props"],"mod":["callback","context","events","functional","html","macros","platform","prelude","scheduler","suspense","utils","virtual_dom"],"struct":["AppHandle","Renderer"]};

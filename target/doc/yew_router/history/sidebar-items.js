@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AnyHistory","HistoryError"],"struct":["BrowserHistory","HashHistory","Location","MemoryHistory"],"trait":["History"],"type":["HistoryResult"]};

@@ -1,0 +1,43 @@
+.services-page {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  font-family: sans-serif;
+  color: #333;
+}
+
+.services-page h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.services-page section {
+  margin-bottom: 2rem;
+}
+
+.services-page h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #4F9167;
+}
+
+.services-page p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.services-page button {
+  background-color: #4caf50;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 2rem auto 0;
+}
+
+.services-page button:hover {
+  background-color: #43a047;
+}

@@ -1,0 +1,128 @@
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F7F4F0;
+  padding: 1rem 2rem;
+  font-family: sans-serif;
+  position: relative;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #373837;
+  white-space: nowrap;
+}
+
+.logo a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.nav-menu {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #373837;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-menu a:hover {
+  background-color: #49b02f;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.contact-phone {
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+.contact-phone:hover {
+  background-color: #eaeaea;
+}
+
+.logo-combo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* FOR MOBILE  */
+@media (max-width: 900px) {
+  .site-header {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-menu {
+    position: static;
+    transform: none;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .nav-menu a {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact-phone {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.25rem;
+    width: 50%;
+    text-align: center;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+}

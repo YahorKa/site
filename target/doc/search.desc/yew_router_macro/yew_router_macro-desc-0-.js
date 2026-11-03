@@ -1,0 +1,1 @@
+searchState.loadedDescShard("yew_router_macro", 0, "Derive macro used to mark an enum as Routable.")
