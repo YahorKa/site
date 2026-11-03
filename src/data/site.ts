@@ -14,7 +14,7 @@ export const site = {
     { days: 'Сб–Вс', time: '11:00–16:00' },
   ],
   socials: [
-    { label: 'Telegram', href: 'https://t.me/nastaMua', icon: '/icons/telegram1.svg' },
+    { label: 'Telegram', href: 'https://t.me/nastasia1313', icon: '/icons/telegram1.svg' },
     {
       label: 'Instagram',
       href: 'https://www.instagram.com/izo_studia_zhodino',
