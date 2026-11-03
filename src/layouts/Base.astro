@@ -40,6 +40,7 @@ const ogImage = new URL(image, siteUrl);
     <meta name="twitter:image" content={ogImage} />
 
     <meta name="theme-color" content="#fbf8f3" />
+    <meta name="yandex-verification" content="82cbf7037bc30f57" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/favicon.png" />
@@ -52,6 +53,42 @@ const ogImage = new URL(image, siteUrl);
     />
 
     <slot name="head" />
+
+    {
+      import.meta.env.PROD && (
+        <>
+          <script is:inline>
+            (function (m, e, t, r, i, k, a) {
+              m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+              m[i].l = 1 * new Date();
+              for (var j = 0; j < document.scripts.length; j++) {
+                if (document.scripts[j].src === r) { return; }
+              }
+              k = e.createElement(t); a = e.getElementsByTagName(t)[0];
+              k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
+            })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+            ym(103968612, 'init', {
+              ssr: true,
+              webvisor: true,
+              clickmap: true,
+              ecommerce: 'dataLayer',
+              accurateTrackBounce: true,
+              trackLinks: true,
+            });
+          </script>
+          <noscript>
+            <div>
+              <img
+                src="https://mc.yandex.ru/watch/103968612"
+                style="position:absolute; left:-9999px"
+                alt=""
+              />
+            </div>
+          </noscript>
+        </>
+      )
+    }
   </head>
   <body>
     <Header />
