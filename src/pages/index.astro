@@ -235,24 +235,31 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
 
     if (scroller && track) {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const SPEED = 0.6; // px за кадр при автопрокрутке
+      const SPEED = 1; // px за кадр (≈60 px/с при 60 fps)
       let paused = false;
+      let visible = true;
       let resumeTimer: ReturnType<typeof setTimeout> | undefined;
+
+      // Safari округляет scrollLeft до целого, поэтому копим дробную позицию сами.
+      let pos = scroller.scrollLeft;
 
       const half = () => track.scrollWidth / 2;
 
-      const wrap = () => {
+      const syncPos = () => {
+        pos = scroller.scrollLeft;
+      };
+
+      const advance = () => {
         const h = half();
         if (!h) return;
-        if (scroller.scrollLeft >= h) scroller.scrollLeft -= h;
-        else if (scroller.scrollLeft < 0) scroller.scrollLeft += h;
+        pos += SPEED;
+        if (pos >= h) pos -= h;
+        if (pos < 0) pos += h;
+        scroller.scrollLeft = Math.round(pos);
       };
 
       const tick = () => {
-        if (!paused && !reduceMotion.matches) {
-          scroller.scrollLeft += SPEED;
-          wrap();
-        }
+        if (!paused && visible && !reduceMotion.matches) advance();
         requestAnimationFrame(tick);
       };
 
@@ -261,34 +268,31 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
         clearTimeout(resumeTimer);
       };
 
-      const resume = (delay = 0) => {
+      const resume = (delay = 1800) => {
         clearTimeout(resumeTimer);
         resumeTimer = setTimeout(() => {
+          syncPos();
           paused = false;
         }, delay);
       };
 
       requestAnimationFrame(tick);
 
-      scroller.addEventListener('mouseenter', pause);
-      scroller.addEventListener('mouseleave', () => resume(500));
-      scroller.addEventListener('focusin', pause);
-      scroller.addEventListener('focusout', () => resume(500));
+      // Колесо и тачпад.
+      scroller.addEventListener('wheel', () => {
+        pause();
+        resume(1200);
+      }, { passive: true });
 
-      // Прокрутка колесом/тачпадом — нативная, только ставим на паузу.
-      scroller.addEventListener(
-        'wheel',
-        () => {
-          pause();
-          resume(1500);
-        },
-        { passive: true },
-      );
-
+      // Прокрутка пальцем.
       scroller.addEventListener('touchstart', pause, { passive: true });
       scroller.addEventListener('touchend', () => resume(1500), { passive: true });
 
-      // Перетаскивание мышью (без pointer capture, чтобы не ломать клики по ссылкам).
+      // Клавиатура.
+      scroller.addEventListener('focusin', pause);
+      scroller.addEventListener('focusout', () => resume(800));
+
+      // Перетаскивание мышью.
       let dragging = false;
       let startX = 0;
       let startScroll = 0;
@@ -309,14 +313,14 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
         const dx = event.clientX - startX;
         if (Math.abs(dx) > 4) moved = true;
         scroller.scrollLeft = startScroll - dx;
-        wrap();
       };
 
       const endDrag = () => {
         if (!dragging) return;
         dragging = false;
         scroller.classList.remove('marquee--dragging');
-        resume(900);
+        syncPos();
+        resume(1200);
       };
 
       scroller.addEventListener('pointerdown', onPointerDown);
@@ -337,8 +341,20 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
         true,
       );
 
+      // Не крутим, когда лента за пределами экрана.
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(
+          (entries) => {
+            visible = entries[0].isIntersecting;
+            if (visible) syncPos();
+          },
+          { rootMargin: '150px' },
+        ).observe(scroller);
+      }
+
       document.addEventListener('visibilitychange', () => {
-        paused = document.hidden;
+        if (document.hidden) pause();
+        else resume(400);
       });
     }
   </script>

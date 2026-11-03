@@ -63,7 +63,20 @@ import { site } from '../data/site';
 
         <div class="sm:col-span-2">
           <label class="label" for="phone">Телефон</label>
-          <input class="field" id="phone" type="tel" name="phone" required autocomplete="tel" placeholder="+375 (__) ___-__-__" />
+          <div class="flex items-stretch overflow-hidden rounded-xl border border-line bg-white/70 focus-within:border-ink/40 focus-within:bg-white">
+            <span class="flex select-none items-center border-r border-line px-4 text-sm text-muted">+375</span>
+            <input
+              class="w-full bg-transparent px-4 py-3 text-sm outline-none"
+              id="phone"
+              type="tel"
+              name="phone"
+              required
+              autocomplete="tel-national"
+              inputmode="tel"
+              placeholder="25 718-72-57"
+            />
+          </div>
+          <p class="mt-1.5 text-xs text-muted">Без кода страны — например, 25 718-72-57</p>
         </div>
 
         <div class="sm:col-span-2">

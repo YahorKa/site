@@ -8,6 +8,19 @@
 
 const REQUIRED = ['parent_name', 'child_name', 'child_age', 'direction', 'phone'];
 
+function normalizePhone(value) {
+  const digits = String(value ?? '').replace(/\D/g, '');
+  if (!digits) return '';
+  let local = digits.startsWith('375') ? digits.slice(3) : digits;
+  if (local.startsWith('80')) local = local.slice(2);
+  local = local.slice(0, 9);
+  const formatted =
+    local.length === 9
+      ? `${local.slice(0, 2)} ${local.slice(2, 5)}-${local.slice(5, 7)}-${local.slice(7, 9)}`
+      : local;
+  return `+375 ${formatted}`;
+}
+
 function esc(value = '') {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -46,7 +59,7 @@ function formatMessage(data) {
     `<b>Родитель:</b> ${esc(data.parent_name)}`,
     `<b>Ученик:</b> ${esc(data.child_name)}, ${esc(data.child_age)} лет`,
     `<b>Направление:</b> ${esc(data.direction)}`,
-    `<b>Телефон:</b> ${esc(data.phone)}`,
+    `<b>Телефон:</b> ${esc(normalizePhone(data.phone) || data.phone)}`,
   ];
 
   if (data.comment && String(data.comment).trim()) {
