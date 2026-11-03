@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { services, site } from '../data/site';
+import { services, site, schedule, prices } from '../data/site';
 ---
 
 <Base
@@ -37,25 +37,47 @@ import { services, site } from '../data/site';
   </section>
 
   <section class="border-y border-line bg-cream/40">
-    <div class="container-page grid gap-8 py-14 sm:grid-cols-3">
-      <div>
-        <h2 class="text-2xl">Стоимость</h2>
-        <p class="mt-3 text-sm leading-relaxed text-muted">
-          Цена зависит от формата и количества занятий. Актуальные цены уточняйте по телефону —
-          подскажем варианты и абонементы.
-        </p>
-      </div>
-      <div>
-        <h2 class="text-2xl">Расписание</h2>
-        <p class="mt-3 text-sm leading-relaxed text-muted">
-          Группы занимаются в будни и выходные. Свободные места и время уточняйте при записи.
-        </p>
-      </div>
-      <div>
-        <h2 class="text-2xl">Материалы</h2>
-        <p class="mt-3 text-sm leading-relaxed text-muted">
-          На первые занятия приносить ничего не нужно — расскажем, что понадобится дальше.
-        </p>
+    <div class="container-page py-14 lg:py-16">
+      <div class="grid gap-12 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow">Расписание</p>
+          <h2 class="mt-3 text-3xl">Расписание групп</h2>
+          <ul class="mt-6 divide-y divide-line border-y border-line">
+            {
+              schedule.map((s) => (
+                <li class="flex items-baseline justify-between gap-4 py-4">
+                  <span class="text-base text-muted">{s.days}</span>
+                  <span class="font-display text-2xl">{s.time}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="mt-4 text-xs leading-relaxed text-muted">
+            Время местное (Минск). Наличие свободных мест уточняйте при записи.
+          </p>
+        </div>
+
+        <div>
+          <p class="eyebrow">Стоимость</p>
+          <h2 class="mt-3 text-3xl">Цены</h2>
+          <div class="mt-6 space-y-3">
+            {
+              prices.map((p) => (
+                <div class="flex items-center justify-between gap-4 rounded-2xl border border-line bg-paper p-5">
+                  <div>
+                    <p class="text-base">{p.title}</p>
+                    <p class="mt-1 text-xs text-muted">{p.detail}</p>
+                  </div>
+                  <p class="whitespace-nowrap font-display text-2xl">{p.price}</p>
+                </div>
+              ))
+            }
+          </div>
+          <p class="mt-4 text-xs leading-relaxed text-muted">
+            Оплата в студии. Материалы на первые занятия приносить не нужно — расскажем, что
+            понадобится дальше.
+          </p>
+        </div>
       </div>
     </div>
   </section>

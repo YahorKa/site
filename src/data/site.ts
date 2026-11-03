@@ -104,6 +104,16 @@ export const gallery = [
   { src: '/gallery/preview12.webp', href: 'https://www.instagram.com/p/DRPZsgXiDJT/', alt: 'Работа ученика изостудии Izo Studio — набросок' },
 ];
 
+export const schedule = [
+  { days: 'Понедельник, среда', time: '09:30–10:15' },
+  { days: 'Понедельник, вторник', time: '16:45–17:30' },
+];
+
+export const prices = [
+  { title: 'Групповые занятия', detail: 'Абонемент на 8 занятий', price: '100 руб' },
+  { title: 'Индивидуальное занятие', detail: '45 минут', price: '20 руб' },
+];
+
 export const steps = [
   {
     n: '01',
