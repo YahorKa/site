@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Не удалось отправить заявку — Izo Studio" description="Что-то пошло не так при отправке заявки.">
+  <section class="container-page flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
+    <p class="eyebrow">Ошибка</p>
+    <h1 class="mt-4 max-w-xl text-4xl leading-tight sm:text-5xl">Заявка не отправилась</h1>
+    <p class="mt-5 max-w-md text-base leading-relaxed text-muted">
+      Что-то сломалось на нашей стороне. Позвоните или напишите в Telegram — ответим быстрее.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href={site.phoneHref} class="btn-primary">Позвонить {site.phone}</a>
+      <a href="https://t.me/nastaMua" target="_blank" rel="noopener noreferrer" class="btn-ghost">Написать в Telegram</a>
+    </div>
+    <a href="/zayavka" class="mt-6 text-sm text-muted underline decoration-line underline-offset-4 hover:text-ink">
+      Попробовать ещё раз
+    </a>
+  </section>
+</Base>
