@@ -165,8 +165,8 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
       </div>
     </div>
 
-    <div class="marquee mt-10 overflow-hidden pb-16 lg:pb-20">
-      <div class="marquee-track flex w-max">
+    <div class="marquee mt-10 pb-16 lg:pb-20" data-marquee>
+      <div class="marquee-track flex w-max" data-marquee-track>
         {
           [0, 1].map((copy) => (
             <div class="flex shrink-0 gap-3 pr-3" aria-hidden={copy === 1 ? 'true' : undefined}>
@@ -174,6 +174,7 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
                 <a
                   href="/gallery"
                   tabindex={copy === 1 ? -1 : undefined}
+                  draggable="false"
                   class="group shrink-0 overflow-hidden rounded-xl border border-paper/10"
                 >
                   <img
@@ -181,6 +182,7 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
                     alt={copy === 1 ? '' : item.alt}
                     width="576"
                     height="416"
+                    draggable="false"
                     loading="lazy"
                     class="h-40 w-56 object-cover transition-transform duration-500 group-hover:scale-105 sm:h-52 sm:w-72"
                   />
@@ -227,4 +229,117 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
       </div>
     </div>
   </section>
+  <script>
+    const scroller = document.querySelector('[data-marquee]');
+    const track = scroller?.querySelector('[data-marquee-track]');
+
+    if (scroller && track) {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const SPEED = 0.6; // px за кадр при автопрокрутке
+      let paused = false;
+      let resumeTimer: ReturnType<typeof setTimeout> | undefined;
+
+      const half = () => track.scrollWidth / 2;
+
+      const wrap = () => {
+        const h = half();
+        if (!h) return;
+        if (scroller.scrollLeft >= h) scroller.scrollLeft -= h;
+        else if (scroller.scrollLeft < 0) scroller.scrollLeft += h;
+      };
+
+      const tick = () => {
+        if (!paused && !reduceMotion.matches) {
+          scroller.scrollLeft += SPEED;
+          wrap();
+        }
+        requestAnimationFrame(tick);
+      };
+
+      const pause = () => {
+        paused = true;
+        clearTimeout(resumeTimer);
+      };
+
+      const resume = (delay = 0) => {
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => {
+          paused = false;
+        }, delay);
+      };
+
+      requestAnimationFrame(tick);
+
+      scroller.addEventListener('mouseenter', pause);
+      scroller.addEventListener('mouseleave', () => resume(500));
+      scroller.addEventListener('focusin', pause);
+      scroller.addEventListener('focusout', () => resume(500));
+
+      // Прокрутка колесом/тачпадом — нативная, только ставим на паузу.
+      scroller.addEventListener(
+        'wheel',
+        () => {
+          pause();
+          resume(1500);
+        },
+        { passive: true },
+      );
+
+      scroller.addEventListener('touchstart', pause, { passive: true });
+      scroller.addEventListener('touchend', () => resume(1500), { passive: true });
+
+      // Перетаскивание мышью (без pointer capture, чтобы не ломать клики по ссылкам).
+      let dragging = false;
+      let startX = 0;
+      let startScroll = 0;
+      let moved = false;
+
+      const onPointerDown = (event: PointerEvent) => {
+        if (event.pointerType !== 'mouse' || event.button !== 0) return;
+        dragging = true;
+        moved = false;
+        startX = event.clientX;
+        startScroll = scroller.scrollLeft;
+        scroller.classList.add('marquee--dragging');
+        pause();
+      };
+
+      const onPointerMove = (event: PointerEvent) => {
+        if (!dragging) return;
+        const dx = event.clientX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        scroller.scrollLeft = startScroll - dx;
+        wrap();
+      };
+
+      const endDrag = () => {
+        if (!dragging) return;
+        dragging = false;
+        scroller.classList.remove('marquee--dragging');
+        resume(900);
+      };
+
+      scroller.addEventListener('pointerdown', onPointerDown);
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', endDrag);
+      window.addEventListener('pointercancel', endDrag);
+
+      // После перетаскивания не переходим по ссылке.
+      scroller.addEventListener(
+        'click',
+        (event: MouseEvent) => {
+          if (moved) {
+            event.preventDefault();
+            event.stopPropagation();
+            moved = false;
+          }
+        },
+        true,
+      );
+
+      document.addEventListener('visibilitychange', () => {
+        paused = document.hidden;
+      });
+    }
+  </script>
 </Base>

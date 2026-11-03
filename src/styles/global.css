@@ -69,38 +69,26 @@
   }
 }
 
-@keyframes marquee-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 .marquee {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent);
 }
 
-.marquee-track {
-  animation: marquee-scroll 80s linear infinite;
-  will-change: transform;
+.marquee::-webkit-scrollbar {
+  display: none;
 }
 
-.marquee:hover .marquee-track,
-.marquee:focus-within .marquee-track {
-  animation-play-state: paused;
+.marquee img {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .marquee {
-    overflow-x: auto;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .marquee-track {
-    animation: none;
-  }
+.marquee--dragging {
+  cursor: grabbing;
+  user-select: none;
 }
