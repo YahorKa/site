@@ -1,0 +1,76 @@
+---
+import { site, nav } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-20 border-t border-line bg-cream/50">
+  <div class="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <a href="/" class="flex items-center gap-2.5">
+        <img src="/icons/iconBlack.png" alt="" width="32" height="32" class="h-8 w-8 object-contain" />
+        <span class="font-display text-lg">Izo Studio</span>
+      </a>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed text-muted">
+        Изостудия в Жодино: живопись, графика, лепка и декоративное искусство для детей и взрослых.
+      </p>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-medium uppercase tracking-wider text-ink">Разделы</h3>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="text-muted transition-colors hover:text-ink">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href="/zayavka" class="text-muted transition-colors hover:text-ink">Запись на занятие</a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-medium uppercase tracking-wider text-ink">Контакты</h3>
+      <ul class="mt-4 space-y-2.5 text-sm text-muted">
+        <li>{site.address}<br />{site.addressNote}</li>
+        <li><a href={site.phoneHref} class="transition-colors hover:text-ink">{site.phone}</a></li>
+        <li><a href={`mailto:${site.email}`} class="transition-colors hover:text-ink">{site.email}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-medium uppercase tracking-wider text-ink">Часы работы</h3>
+      <ul class="mt-4 space-y-2 text-sm text-muted">
+        {site.hours.map((h) => <li>{h.days}: {h.time}</li>)}
+      </ul>
+      <div class="mt-5 flex gap-2">
+        {
+          site.socials.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-paper transition-colors hover:border-ink/30"
+              aria-label={s.label}
+            >
+              <img src={s.icon} alt="" width="18" height="18" class="h-4 w-4 object-contain" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-line">
+    <div class="container-page flex flex-col gap-1.5 py-6 text-xs leading-relaxed text-muted">
+      <p>© {year} Художественная школа IzoStudio. Все права защищены.</p>
+      <p>Сайт носит исключительно информационный характер. Продажа товаров и оказание услуг через сайт не осуществляется.</p>
+      <p>Ремесленная деятельность осуществляется в соответствии с Указом Президента РБ №364 от 09.10.2017.</p>
+    </div>
+  </div>
+</footer>

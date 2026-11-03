@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import { gallery } from '../data/site';
+---
+
+<Base
+  title="Галерея работ учеников — Izo Studio, Жодино"
+  description="Работы учеников изостудии Izo Studio в Жодино: живопись, графика, натюрморты, пейзажи и портреты."
+>
+  <section class="container-page pt-12 pb-8 lg:pt-20">
+    <p class="eyebrow">Галерея</p>
+    <h1 class="mt-4 text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">Работы учеников</h1>
+    <p class="mt-5 max-w-xl text-base leading-relaxed text-muted">
+      Живопись, графика, натюрморты и пейзажи — то, что получается на занятиях. Нажмите на работу,
+      чтобы открыть её в Instagram студии.
+    </p>
+  </section>
+
+  <section class="container-page pb-20">
+    <div class="columns-2 gap-3 sm:columns-3 lg:columns-4">
+      {
+        gallery.map((item, i) => (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative mb-3 block break-inside-avoid overflow-hidden rounded-xl border border-line bg-cream"
+          >
+            <img
+              src={item.src}
+              alt={item.alt}
+              loading={i < 4 ? 'eager' : 'lazy'}
+              class="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <span class="pointer-events-none absolute inset-0 bg-ink/0 transition-colors group-hover:bg-ink/10" />
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container-page pb-20">
+    <div class="rounded-[2rem] border border-line bg-cream px-6 py-12 text-center">
+      <h2 class="mx-auto max-w-xl text-3xl sm:text-4xl">Хотите так же?</h2>
+      <p class="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted">
+        Начните с одного занятия — дальше будет видно.
+      </p>
+      <a href="/zayavka" class="btn-primary mt-8">Записаться на занятие</a>
+    </div>
+  </section>
+</Base>

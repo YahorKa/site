@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import { teacher } from '../data/site';
+---
+
+<Base
+  title="О студии — Izo Studio, Жодино"
+  description="Художественная студия Izo Studio в Жодино: живопись, графика, композиция и дизайн. Преподаватель Анастасия Кочкина — художник и педагог."
+>
+  <section class="container-page pt-12 pb-10 lg:pt-20">
+    <p class="eyebrow">О студии</p>
+    <h1 class="mt-4 max-w-3xl text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
+      Место, где дети и взрослые раскрывают свой творческий потенциал
+    </h1>
+  </section>
+
+  <section class="container-page grid gap-10 pb-16 lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="max-w-xl space-y-5 text-base leading-relaxed text-muted">
+      <p>
+        Художественная студия Izo Studio — это место, где дети и взрослые раскрывают свой творческий
+        потенциал. Мы обучаем живописи, графике, композиции и дизайну с нуля и до уверенного уровня.
+      </p>
+      <p>
+        Наши преподаватели — опытные художники и педагоги, которые умеют вдохновлять и поддерживать.
+        Мы верим, что искусство доступно каждому.
+      </p>
+      <p>
+        Запишитесь на занятие, приходите на выставку или просто загляните — мы всегда рады новым
+        лицам.
+      </p>
+    </div>
+    <div class="rounded-2xl border border-line bg-cream/50 p-6">
+      <h2 class="text-xl">Что для нас важно</h2>
+      <ul class="mt-4 space-y-3 text-sm leading-relaxed text-muted">
+        <li>— Без формализма и лишней бюрократии</li>
+        <li>— Внимание к каждому ученику, а не «поток»</li>
+        <li>— Свобода в выборе материалов и темы</li>
+        <li>— Результат виден в работах, а не в отчётах</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-y border-line bg-cream/40">
+    <div class="container-page grid gap-10 py-16 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:py-20">
+      <div class="overflow-hidden rounded-[2rem] border border-line">
+        <img
+          src={teacher.photo}
+          alt={`${teacher.name} — преподаватель изостудии`}
+          width="700"
+          height="875"
+          class="aspect-4/5 w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div>
+        <p class="eyebrow">Преподаватель</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl">{teacher.name}</h2>
+        <p class="mt-2 text-sm text-muted">{teacher.role}</p>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-muted">
+          Специализация — академическая живопись и графика. Более 10 лет опыта преподавания детям и
+          взрослым. Вдохновляет, поддерживает, раскрывает потенциал.
+        </p>
+        <a
+          href={teacher.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost mt-8"
+        >
+          Смотреть работы
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-16 lg:py-24">
+    <p class="eyebrow">Подход</p>
+    <h2 class="mt-3 max-w-xl text-3xl sm:text-4xl">Альтернатива скучным школам</h2>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2">
+      <article class="card">
+        <h3 class="text-xl">С нуля</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Не нужно уметь рисовать, чтобы начать. Первые занятия — про материалы, руку и уверенность.
+        </p>
+      </article>
+      <article class="card">
+        <h3 class="text-xl">Дети и взрослые</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Отдельные группы по возрасту и уровню. Взрослым — тоже можно: никогда не поздно.
+        </p>
+      </article>
+      <article class="card">
+        <h3 class="text-xl">Без давления</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Никаких «правильно/неправильно». Задача — научить видеть и выражать, а не сдать норматив.
+        </p>
+      </article>
+      <article class="card">
+        <h3 class="text-xl">Результат</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Работы учеников показываем в галерее студии и на выставках.
+        </p>
+      </article>
+    </div>
+  </section>
+</Base>

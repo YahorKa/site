@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Страница не найдена — Izo Studio" description="Такой страницы нет.">
+  <section class="container-page flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
+    <img src="/404.png" alt="" width="220" height="220" class="mb-8 opacity-80" />
+    <p class="eyebrow">Ошибка 404</p>
+    <h1 class="mt-4 text-4xl sm:text-5xl">Страница не найдена</h1>
+    <p class="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+      Возможно, ссылка устарела. Вернитесь на главную или посмотрите работы учеников.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn-primary">На главную</a>
+      <a href="/gallery" class="btn-ghost">Галерея</a>
+    </div>
+  </section>
+</Base>

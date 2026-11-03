@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #fbf8f3;
+  --color-cream: #f3ede4;
+  --color-ink: #1a1714;
+  --color-muted: #6e665b;
+  --color-line: #e4dcd1;
+  --color-clay: #b4553b;
+  --color-clay-dark: #96432d;
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-medium tracking-tight;
+  }
+
+  ::selection {
+    background: #ead9cf;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-[0.22em] text-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-transparent px-6 py-3 text-sm font-medium transition-colors;
+    @apply bg-ink text-paper hover:bg-clay;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors;
+    @apply border border-line bg-transparent text-ink hover:bg-cream;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-white/50 p-6;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line bg-white/70 px-4 py-3 text-sm outline-none transition focus:border-ink/40 focus:bg-white;
+  }
+
+  .label {
+    @apply mb-2 block text-sm font-medium text-ink;
+  }
+}

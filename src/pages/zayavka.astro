@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Запись на занятие — Izo Studio, Жодино"
+  description="Онлайн-заявка в изостудию Izo Studio в Жодино: укажите имя, возраст и направление — подберём группу и время."
+>
+  <section class="container-page grid gap-12 pt-12 pb-20 lg:grid-cols-[0.85fr_1.15fr] lg:pt-20">
+    <div>
+      <p class="eyebrow">Запись</p>
+      <h1 class="mt-4 text-4xl leading-[1.05] sm:text-5xl">Заявка на занятие</h1>
+      <p class="mt-5 max-w-sm text-base leading-relaxed text-muted">
+        Заполните форму — мы свяжемся, уточним детали и подберём удобное время. Заявка ни к чему не
+        обязывает.
+      </p>
+
+      <div class="mt-8 space-y-3 text-sm text-muted">
+        <p>Не хотите заполнять форму? Позвоните:</p>
+        <p><a href={site.phoneHref} class="text-lg text-ink hover:text-clay">{site.phone}</a></p>
+        <p>Или напишите в <a href="https://t.me/nastaMua" target="_blank" rel="noopener noreferrer" class="text-ink underline decoration-line underline-offset-4 hover:text-clay">Telegram</a>.</p>
+      </div>
+    </div>
+
+    <form
+      name="zayavka"
+      method="POST"
+      action="/spasibo"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="rounded-[1.5rem] border border-line bg-white/50 p-6 sm:p-8"
+    >
+      <input type="hidden" name="form-name" value="zayavka" />
+      <p class="hidden">
+        <label>Не заполняйте это поле: <input name="bot-field" /></label>
+      </p>
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label class="label" for="parent_name">Имя родителя</label>
+          <input class="field" id="parent_name" type="text" name="parent_name" required autocomplete="name" />
+        </div>
+
+        <div>
+          <label class="label" for="child_name">Имя ученика</label>
+          <input class="field" id="child_name" type="text" name="child_name" required />
+        </div>
+
+        <div>
+          <label class="label" for="child_age">Возраст</label>
+          <input class="field" id="child_age" type="number" name="child_age" min="3" max="99" required />
+        </div>
+
+        <div>
+          <label class="label" for="direction">Направление</label>
+          <select class="field" id="direction" name="direction" required>
+            <option value="" disabled selected>Выберите</option>
+            <option>Живопись</option>
+            <option>Графика</option>
+            <option>Лепка</option>
+            <option>Декоративное искусство</option>
+            <option>Не знаю — подскажите</option>
+          </select>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="label" for="phone">Телефон</label>
+          <input class="field" id="phone" type="tel" name="phone" required autocomplete="tel" placeholder="+375 (__) ___-__-__" />
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="label" for="comment">Комментарий</label>
+          <textarea class="field min-h-28 resize-y" id="comment" name="comment" rows="4" placeholder="Удобные дни и время, опыт, вопросы"></textarea>
+        </div>
+      </div>
+
+      <label class="mt-6 flex items-start gap-3 text-xs leading-relaxed text-muted">
+        <input type="checkbox" name="consent" required class="mt-0.5 h-4 w-4 accent-ink" />
+        <span>
+          Согласен на обработку персональных данных для связи по заявке.
+        </span>
+      </label>
+
+      <button type="submit" class="btn-primary mt-6 w-full sm:w-auto">Отправить заявку</button>
+    </form>
+  </section>
+</Base>

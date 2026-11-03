@@ -1,0 +1,183 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, directions, gallery, steps, teacher } from '../data/site';
+
+const preview = gallery.slice(0, 6);
+---
+
+<Base title="Изостудия в Жодино — живопись, графика, лепка | Izo Studio">
+  <!-- Hero -->
+  <section class="container-page grid gap-12 pt-10 pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-16 lg:pb-24">
+    <div>
+      <p class="eyebrow">Жодино · Дворец культуры</p>
+      <h1 class="mt-5 text-[2.75rem] leading-[0.95] sm:text-6xl lg:text-7xl">
+        Изостудия<br />
+        <span class="italic text-clay">в Жодино</span>
+      </h1>
+      <p class="mt-6 max-w-md text-base leading-relaxed text-muted">
+        Живопись, графика, лепка и декоративное искусство для детей и взрослых. Без формализма и
+        давления — с вниманием к каждому.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/zayavka" class="btn-primary">Записаться на занятие</a>
+        <a href="/gallery" class="btn-ghost">Смотреть работы</a>
+      </div>
+
+      <dl class="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-6">
+        <div>
+          <dt class="font-display text-2xl">10+ лет</dt>
+          <dd class="mt-1 text-xs leading-snug text-muted">педагогического опыта</dd>
+        </div>
+        <div>
+          <dt class="font-display text-2xl">4</dt>
+          <dd class="mt-1 text-xs leading-snug text-muted">направления обучения</dd>
+        </div>
+        <div>
+          <dt class="font-display text-2xl">12</dt>
+          <dd class="mt-1 text-xs leading-snug text-muted">работ в галерее</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="relative">
+      <div class="overflow-hidden rounded-[2rem] border border-line">
+        <img
+          src="/gallery/preview2.jpg"
+          alt="Работа ученика изостудии Izo Studio в Жодино"
+          width="800"
+          height="1000"
+          class="aspect-4/5 w-full object-cover"
+          fetchpriority="high"
+        />
+      </div>
+      <div class="absolute -bottom-6 -left-4 hidden w-52 rounded-2xl border border-line bg-paper p-5 sm:block">
+        <p class="font-display text-lg leading-tight">Начнём со знакомства</p>
+        <p class="mt-1.5 text-xs leading-relaxed text-muted">
+          Подберём направление, группу и удобное время
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Directions -->
+  <section class="border-y border-line bg-cream/40">
+    <div class="container-page py-16 lg:py-20">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="eyebrow">Направления</p>
+          <h2 class="mt-3 text-3xl sm:text-4xl">Чему учимся</h2>
+        </div>
+        <a href="/services" class="text-sm text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink">
+          Все занятия и форматы →
+        </a>
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          directions.map((d) => (
+            <article class="group rounded-2xl border border-line bg-paper p-6 transition-colors hover:border-ink/25">
+              <h3 class="text-2xl">{d.title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted">{d.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Teacher -->
+  <section class="container-page py-16 lg:py-24">
+    <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+      <div class="overflow-hidden rounded-[2rem] border border-line">
+        <img
+          src={teacher.photo}
+          alt={`${teacher.name} — преподаватель изостудии`}
+          width="700"
+          height="875"
+          class="aspect-4/5 w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div>
+        <p class="eyebrow">Преподаватель</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl">{teacher.name}</h2>
+        <p class="mt-2 text-sm text-muted">{teacher.role}</p>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-muted">{teacher.bio}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/about" class="btn-ghost">Подробнее о студии</a>
+          <a href={teacher.instagram} target="_blank" rel="noopener noreferrer" class="btn-ghost">
+            Работы в Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery strip -->
+  <section class="border-y border-line bg-ink text-paper">
+    <div class="container-page py-16 lg:py-20">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p class="eyebrow text-paper/50">Галерея</p>
+          <h2 class="mt-3 text-3xl sm:text-4xl">Работы учеников</h2>
+        </div>
+        <a href="/gallery" class="text-sm text-paper/60 underline decoration-paper/20 underline-offset-4 transition-colors hover:text-paper">
+          Смотреть все работы →
+        </a>
+      </div>
+
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {
+          preview.map((item) => (
+            <a href="/gallery" class="group overflow-hidden rounded-xl border border-paper/10">
+              <img
+                src={item.src}
+                alt={item.alt}
+                width="400"
+                height="400"
+                class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps -->
+  <section class="container-page py-16 lg:py-24">
+    <p class="eyebrow">Как начать</p>
+    <h2 class="mt-3 max-w-xl text-3xl sm:text-4xl">Три шага до первого занятия</h2>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        steps.map((s) => (
+          <article class="rounded-2xl border border-line p-6">
+            <span class="font-display text-3xl text-clay">{s.n}</span>
+            <h3 class="mt-4 text-xl">{s.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container-page pb-20">
+    <div class="rounded-[2rem] border border-line bg-cream px-6 py-12 text-center sm:px-12 sm:py-16">
+      <p class="eyebrow">Запись</p>
+      <h2 class="mx-auto mt-3 max-w-2xl text-3xl sm:text-4xl">
+        Расскажите, чем хотите заниматься — подберём группу и время
+      </h2>
+      <p class="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted">
+        Оставьте заявку или позвоните: {site.phone}
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/zayavka" class="btn-primary">Оставить заявку</a>
+        <a href={site.phoneHref} class="btn-ghost">Позвонить</a>
+      </div>
+    </div>
+  </section>
+</Base>
