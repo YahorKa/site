@@ -17,7 +17,7 @@ export const site = {
     { label: 'Telegram', href: 'https://t.me/nastasia1313', icon: '/icons/telegram1.svg' },
     {
       label: 'Instagram',
-      href: 'https://www.instagram.com/izo_studia_zhodino',
+      href: 'https://www.instagram.com/izo_studia_zhodino/',
       icon: '/icons/insta1.svg',
     },
   ],
@@ -84,7 +84,7 @@ export const teacher = {
   name: 'Анастасия Владимировна Кочкина',
   role: 'Художник, педагог',
   photo: '/teachers/nasta.jpeg',
-  instagram: 'https://www.instagram.com/nasta_arty/',
+  instagram: 'https://www.instagram.com/izo_studia_zhodino/',
   bio: 'Академическая живопись и графика. Более 10 лет преподавания детям и взрослым. Вдохновляет, поддерживает и помогает раскрыть потенциал каждому ученику.',
 };
 
