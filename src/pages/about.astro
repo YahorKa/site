@@ -60,14 +60,17 @@ import { teacher } from '../data/site';
           Специализация — академическая живопись и графика. Более 10 лет опыта преподавания детям и
           взрослым. Вдохновляет, поддерживает, раскрывает потенциал.
         </p>
-        <a
-          href={teacher.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-ghost mt-8"
-        >
-          Смотреть работы
-        </a>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/gallery" class="btn-primary">Смотреть работы</a>
+          <a
+            href={teacher.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-ghost"
+          >
+            Instagram преподавателя
+          </a>
+        </div>
       </div>
     </div>
   </section>
