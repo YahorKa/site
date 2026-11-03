@@ -1,8 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site, directions, gallery, steps, teacher, schedule, prices } from '../data/site';
-
-const preview = gallery.slice(0, 6);
 ---
 
 <Base title="Изостудия в Жодино — живопись, графика, лепка | Izo Studio">
@@ -102,7 +100,7 @@ const preview = gallery.slice(0, 6);
             ))
           }
         </ul>
-        <p class="mt-4 text-xs text-muted">Время местное (Минск). Свободные места уточняйте при записи.</p>
+        <p class="mt-4 text-xs text-muted">Свободные места уточняйте при записи.</p>
       </div>
 
       <div class="rounded-[2rem] border border-line bg-cream p-7 sm:p-8">
@@ -165,20 +163,30 @@ const preview = gallery.slice(0, 6);
           Смотреть все работы →
         </a>
       </div>
+    </div>
 
-      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+    <div class="marquee mt-10 overflow-hidden pb-16 lg:pb-20">
+      <div class="marquee-track flex w-max">
         {
-          preview.map((item) => (
-            <a href="/gallery" class="group overflow-hidden rounded-xl border border-paper/10">
-              <img
-                src={item.src}
-                alt={item.alt}
-                width="400"
-                height="400"
-                class="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-            </a>
+          [0, 1].map((copy) => (
+            <div class="flex shrink-0 gap-3 pr-3" aria-hidden={copy === 1 ? 'true' : undefined}>
+              {gallery.map((item) => (
+                <a
+                  href="/gallery"
+                  tabindex={copy === 1 ? -1 : undefined}
+                  class="group shrink-0 overflow-hidden rounded-xl border border-paper/10"
+                >
+                  <img
+                    src={item.src}
+                    alt={copy === 1 ? '' : item.alt}
+                    width="576"
+                    height="416"
+                    loading="lazy"
+                    class="h-40 w-56 object-cover transition-transform duration-500 group-hover:scale-105 sm:h-52 sm:w-72"
+                  />
+                </a>
+              ))}
+            </div>
           ))
         }
       </div>
