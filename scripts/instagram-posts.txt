@@ -1,0 +1,17 @@
+# Ссылки на посты Instagram, которые попадут в галерею.
+# Один URL на строку. Порядок = порядок в галерее.
+# Чтобы добавить новую работу: скопируйте ссылку из приложения Instagram
+# (⋮ → «Копировать ссылку») и допишите строкой сюда, затем запустите:
+#   node scripts/fetch-instagram.mjs
+https://www.instagram.com/p/DNyCnjM0Nwv/
+https://www.instagram.com/izo_studia_zhodino/p/DNsaTHzULTI/
+https://www.instagram.com/izo_studia_zhodino/p/DN5R6IrCN51/
+https://www.instagram.com/p/DNU7DyIonZe/
+https://www.instagram.com/p/DNTVXOOIzdL/
+https://www.instagram.com/p/DNTkhcNOnzM/
+https://www.instagram.com/p/DNlcNAOoDTY/
+https://www.instagram.com/p/DN5Rf2lCCk6/
+https://www.instagram.com/p/DRm_EplCKyh/
+https://www.instagram.com/p/DRPZ5LEiEx5/
+https://www.instagram.com/p/DRhE-vJCA_7/
+https://www.instagram.com/p/DRPZsgXiDJT/
