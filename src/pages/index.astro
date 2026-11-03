@@ -39,15 +39,22 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
     </div>
 
     <div class="relative">
-      <div class="overflow-hidden rounded-[2rem] border border-line">
-        <img
-          src="/gallery/preview2.jpg"
-          alt="Работа ученика изостудии Izo Studio в Жодино"
-          width="800"
-          height="1000"
+      <div class="overflow-hidden rounded-[2rem] border border-line bg-cream">
+        <video
           class="aspect-4/5 w-full object-cover"
-          fetchpriority="high"
-        />
+          data-hero-video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/video/hero-poster.jpg"
+          width="896"
+          height="1120"
+          aria-label="Работы учеников изостудии Izo Studio в Жодино"
+        >
+          <source src="/video/hero.mp4" type="video/mp4" />
+        </video>
       </div>
       <div class="absolute -bottom-6 -left-4 hidden w-52 rounded-2xl border border-line bg-paper p-5 sm:block">
         <p class="font-display text-lg leading-tight">Начнём со знакомства</p>
@@ -356,6 +363,13 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
         if (document.hidden) pause();
         else resume(400);
       });
+    }
+
+    // Видео в первом экране не крутим, если в системе включено «уменьшить движение».
+    const heroVideo = document.querySelector('[data-hero-video]');
+    if (heroVideo && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      heroVideo.pause();
+      heroVideo.removeAttribute('autoplay');
     }
   </script>
 </Base>
