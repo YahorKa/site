@@ -218,12 +218,17 @@ async function handle(update) {
   if (!message) return;
 
   const chatId = String(message.chat.id);
+  const text = (message.text || '').trim();
+
+  // /id отвечаем всегда: иначе не понять, из какого чата пришло сообщение
+  if (text === '/id') {
+    const allowed = ALLOWED.includes(chatId) ? 'этот чат подключён ✅' : 'этот чат НЕ подключён ❌';
+    return tg(chatId, `chat_id: <code>${chatId}</code>\n${allowed}`);
+  }
 
   if (!ALLOWED.includes(chatId)) {
     return; // чужим не отвечаем и ничего не меняем
   }
-
-  const text = (message.text || '').trim();
 
   if (!text && (message.photo || message.document)) {
     return addWork(chatId, message);
