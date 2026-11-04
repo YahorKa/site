@@ -1,3 +1,7 @@
+import works from './works.json';
+import pricesData from './prices.json';
+import scheduleData from './schedule.json';
+
 export const site = {
   name: 'Izo Studio',
   legalName: 'Изостудия Izo Studio',
@@ -95,18 +99,11 @@ export type GalleryItem = {
 };
 
 export const gallery: GalleryItem[] = [
-  {
-    src: '/gallery/works/lisenok-zont.jpg',
-    alt: 'Лисёнок под зонтом — работа ученика изостудии Izo Studio в Жодино',
-  },
-  {
-    src: '/gallery/works/prividenie-mella.jpg',
-    alt: 'Привидение на метле — работа ученика изостудии Izo Studio в Жодино',
-  },
-  {
-    src: '/gallery/works/sova-pismo.jpg',
-    alt: 'Сова с письмом — работа ученика изостудии Izo Studio в Жодино',
-  },
+  ...works.map((w) => ({
+    src: `/gallery/works/${w.file}`,
+    alt: `${w.title} — работа ученика изостудии Izo Studio в Жодино${w.technique ? `, ${w.technique}` : ''}`,
+    caption: w.title,
+  })),
   { src: '/gallery/preview1.jpg', href: 'https://www.instagram.com/p/DNyCnjM0Nwv/', alt: 'Работа ученика изостудии Izo Studio — живопись' },
   { src: '/gallery/preview2.jpg', href: 'https://www.instagram.com/izo_studia_zhodino/p/DNsaTHzULTI/', alt: 'Работа ученика изостудии Izo Studio — натюрморт' },
   { src: '/gallery/preview3.jpg', href: 'https://www.instagram.com/izo_studia_zhodino/p/DN5R6IrCN51/', alt: 'Работа ученика изостудии Izo Studio — графика' },
@@ -121,15 +118,9 @@ export const gallery: GalleryItem[] = [
   { src: '/gallery/preview12.webp', href: 'https://www.instagram.com/p/DRPZsgXiDJT/', alt: 'Работа ученика изостудии Izo Studio — набросок' },
 ];
 
-export const schedule = [
-  { days: 'Понедельник, среда', time: '09:30–10:15' },
-  { days: 'Понедельник, вторник', time: '16:45–17:30' },
-];
+export const schedule = scheduleData;
 
-export const prices = [
-  { title: 'Групповые занятия', detail: 'Абонемент на 8 занятий', price: '100 руб' },
-  { title: 'Индивидуальное занятие', detail: '45 минут', price: '20 руб' },
-];
+export const prices = pricesData;
 
 export const steps = [
   {
