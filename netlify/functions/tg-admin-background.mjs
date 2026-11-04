@@ -88,6 +88,23 @@ const TRANSLIT = {
   э: 'e', ю: 'yu', я: 'ya',
 };
 
+function parseCaption(caption) {
+  const raw = String(caption || '').trim();
+  if (!raw) return { title: '', technique: '' };
+
+  const semi = raw.split(';');
+  if (semi.length > 1) {
+    return { title: semi[0].trim(), technique: semi.slice(1).join(';').trim() };
+  }
+
+  const paren = raw.match(/^(.*?)\s*[\(\[]([^\)\]]+)[\)\]]\s*$/);
+  if (paren) {
+    return { title: paren[1].trim(), technique: paren[2].trim() };
+  }
+
+  return { title: raw, technique: '' };
+}
+
 function slugify(text) {
   const base = String(text)
     .toLowerCase()
@@ -114,8 +131,8 @@ function helpText() {
     '<b>Админка Izo Studio</b>',
     '',
     '• Пришлите фото с подписью — добавлю работу в галерею.',
-    '  Подпись: <i>Название; техника</i>',
-    '  Например: <i>Кот в шапке; гуашь</i>',
+    '  Подпись: <i>Название; техника</i> или <i>Название (техника)</i>',
+    '  Например: <i>Кот в шапке; гуашь</i> или <i>Тукан (гуашь)</i>',
     '',
     '• /list — все работы в галерее',
     '',
@@ -157,9 +174,9 @@ async function addWork(chatId, message) {
   }
 
   const fileId = photos ? photos[photos.length - 1].file_id : doc.file_id;
-  const [titleRaw, techniqueRaw] = caption.split(';').map((s) => s.trim());
-  const title = titleRaw || 'Без названия';
-  const technique = techniqueRaw || '';
+  const parsed = parseCaption(caption);
+  const title = parsed.title || 'Без названия';
+  const technique = parsed.technique;
 
   await tg(chatId, '⏳ Сохраняю…');
 
