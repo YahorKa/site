@@ -27,8 +27,6 @@ const ALLOWED = (process.env.ADMIN_CHAT_IDS || '-5478222453')
 
 const PATHS = {
   gallery: 'src/data/gallery.json',
-  prices: 'src/data/prices.json',
-  schedule: 'src/data/schedule.json',
   images: 'public/gallery/works',
 };
 
@@ -63,16 +61,6 @@ async function ghPut(path, content, message, sha) {
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`GitHub PUT ${path}: ${res.status} ${await res.text()}`);
-  return res.json();
-}
-
-async function ghDelete(path, message, sha) {
-  const res = await fetch(`${API}/repos/${REPO}/contents/${encodeURI(path)}`, {
-    method: 'DELETE',
-    headers: ghHeaders,
-    body: JSON.stringify({ message, sha, branch: BRANCH }),
-  });
-  if (!res.ok) throw new Error(`GitHub DELETE ${path}: ${res.status} ${await res.text()}`);
   return res.json();
 }
 
@@ -129,32 +117,26 @@ function helpText() {
     '  Подпись: <i>Название; техника</i>',
     '  Например: <i>Кот в шапке; гуашь</i>',
     '',
-    '• /list — работы, цены и расписание',
-    '• /del 2 — удалить работу №2',
-    '• /price 1 120 руб — цена №1',
-    '• /time 1 Пн, Ср 09:30-10:15 — расписание №1',
+    '• /list — все работы в галерее',
     '',
-    'После правки сайт обновляется сам за ~30 секунд.',
+    'После добавления сайт обновляется сам за ~30 секунд.',
   ].join('\n');
 }
 
 async function listAll(chatId) {
   const items = (await readJson(PATHS.gallery)).data;
-  const prices = (await readJson(PATHS.prices)).data;
-  const schedule = (await readJson(PATHS.schedule)).data;
+  const works = items.filter((w) => w.type === 'work');
+  const fromInstagram = items.length - works.length;
 
   const lines = [`<b>Галерея</b> — ${items.length} работ`];
+  if (items.length === 0) lines.push('— пока пусто');
   items.forEach((w, i) => {
     const mark = w.type === 'work' ? '🖼' : '📷';
     const tech = w.technique ? ` <i>(${esc(w.technique)})</i>` : '';
     lines.push(`${i + 1}. ${mark} ${esc(w.title)}${tech}`);
   });
 
-  lines.push('', '<b>Цены</b>');
-  prices.forEach((p, i) => lines.push(`${i + 1}. ${esc(p.title)} — <b>${esc(p.price)}</b>`));
-
-  lines.push('', '<b>Расписание</b>');
-  schedule.forEach((s, i) => lines.push(`${i + 1}. ${esc(s.days)} — ${esc(s.time)}`));
+  lines.push('', `🖼 загружено через бота: ${works.length} · 📷 из Instagram: ${fromInstagram}`);
 
   await tg(chatId, lines.join('\n'));
 }
@@ -214,90 +196,6 @@ async function addWork(chatId, message) {
   await tg(chatId, `✅ Добавил «${esc(title)}».\nЧерез ~30 секунд появится на сайте.`);
 }
 
-async function deleteWork(chatId, arg) {
-  const index = Number(arg) - 1;
-  const file = await readJson(PATHS.gallery);
-  if (!Number.isInteger(index) || index < 0 || index >= file.data.length) {
-    await tg(chatId, `Нет работы с таким номером. Всего работ: ${file.data.length}. Смотрите /list`);
-    return;
-  }
-
-  const [removed] = file.data.splice(index, 1);
-  await ghPut(
-    PATHS.gallery,
-    JSON.stringify(file.data, null, 2) + '\n',
-    `Галерея: убрать «${removed.title}»`,
-    file.sha,
-  );
-
-  // файл с картинкой удаляем только у загруженных работ
-  if (removed.type === 'work') {
-    const imagePath = `${PATHS.images}/${removed.file}`;
-    const image = await ghGet(imagePath);
-    if (image) await ghDelete(imagePath, `Галерея: удалить файл ${removed.file}`, image.sha);
-  }
-
-  const note = removed.type === 'instagram' ? '\n(пост в Instagram не тронут, работа убрана только с сайта)' : '';
-  await tg(chatId, `🗑 Убрал «${esc(removed.title)}»${note}`);
-}
-
-async function setPrice(chatId, arg) {
-  const match = String(arg).match(/^(\d+)\s+(.+)$/);
-  if (!match) {
-    await tg(chatId, 'Формат: <code>/price 1 120 руб</code>');
-    return;
-  }
-  const index = Number(match[1]) - 1;
-  const value = match[2].trim();
-
-  const file = await readJson(PATHS.prices);
-  if (index < 0 || index >= file.data.length) {
-    await tg(chatId, `Нет цены с таким номером. Всего: ${file.data.length}. Смотрите /list`);
-    return;
-  }
-
-  const before = file.data[index].price;
-  file.data[index].price = value;
-  await ghPut(PATHS.prices, JSON.stringify(file.data, null, 2) + '\n', `Цены: ${file.data[index].title} → ${value}`, file.sha);
-
-  await tg(chatId, `✅ ${esc(file.data[index].title)}: ${esc(before)} → <b>${esc(value)}</b>`);
-}
-
-async function setTime(chatId, arg) {
-  const match = String(arg).match(/^(\d+)\s+(.+)$/);
-  if (!match) {
-    await tg(chatId, 'Формат: <code>/time 1 Пн, Ср 09:30-10:15</code>');
-    return;
-  }
-  const index = Number(match[1]) - 1;
-  const rest = match[2].trim();
-
-  const timeMatch = rest.match(/(\d{1,2}[:.]\d{2})\s*[-–—]\s*(\d{1,2}[:.]\d{2})/);
-  if (!timeMatch) {
-    await tg(chatId, 'Не вижу времени. Пример: <code>/time 1 Пн, Ср 09:30-10:15</code>');
-    return;
-  }
-
-  const days = rest.slice(0, timeMatch.index).replace(/[,\s]+$/, '').trim();
-  if (!days) {
-    await tg(chatId, 'Не вижу дней недели. Пример: <code>/time 1 Пн, Ср 09:30-10:15</code>');
-    return;
-  }
-
-  const time = `${timeMatch[1].replace('.', ':')}–${timeMatch[2].replace('.', ':')}`;
-
-  const file = await readJson(PATHS.schedule);
-  if (index < 0 || index >= file.data.length) {
-    await tg(chatId, `Нет группы с таким номером. Всего: ${file.data.length}. Смотрите /list`);
-    return;
-  }
-
-  file.data[index] = { days, time };
-  await ghPut(PATHS.schedule, JSON.stringify(file.data, null, 2) + '\n', `Расписание: ${days} ${time}`, file.sha);
-
-  await tg(chatId, `✅ Группа ${index + 1}: ${esc(days)} — <b>${esc(time)}</b>`);
-}
-
 async function handle(update) {
   const message = update.message || update.channel_post;
   if (!message) return;
@@ -317,10 +215,6 @@ async function handle(update) {
   if (text === '/start' || text === '/help') return tg(chatId, helpText());
   if (text === '/id') return tg(chatId, `chat_id: <code>${chatId}</code>`);
   if (text === '/list') return listAll(chatId);
-
-  if (text.startsWith('/del')) return deleteWork(chatId, text.replace('/del', '').trim());
-  if (text.startsWith('/price')) return setPrice(chatId, text.replace('/price', '').trim());
-  if (text.startsWith('/time')) return setTime(chatId, text.replace('/time', '').trim());
 
   return tg(chatId, 'Не понял команду. /help — что я умею.');
 }
