@@ -20,10 +20,18 @@ const REPO = process.env.GITHUB_REPO || 'YahorKa/site';
 const BRANCH = process.env.GITHUB_BRANCH || 'astro';
 const TOKEN = process.env.GITHUB_TOKEN;
 const BOT = process.env.TELEGRAM_BOT_TOKEN;
-const ALLOWED = (process.env.ADMIN_CHAT_IDS || '-5478222453')
-  .split(',')
-  .map((id) => id.trim())
-  .filter(Boolean);
+// Оба ID: старая группа и супергруппа, в которую она превратилась.
+// Переменная ADMIN_CHAT_IDS добавляется к этому списку, а не заменяет его.
+const DEFAULT_CHATS = ['-5478222453', '-1003823799689'];
+const ALLOWED = [
+  ...new Set([
+    ...DEFAULT_CHATS,
+    ...(process.env.ADMIN_CHAT_IDS || '')
+      .split(',')
+      .map((id) => id.trim())
+      .filter(Boolean),
+  ]),
+];
 
 const PATHS = {
   gallery: 'src/data/gallery.json',
