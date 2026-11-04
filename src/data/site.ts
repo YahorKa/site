@@ -1,4 +1,4 @@
-import works from './works.json';
+import rawGallery from './gallery.json';
 import pricesData from './prices.json';
 import scheduleData from './schedule.json';
 
@@ -98,25 +98,25 @@ export type GalleryItem = {
   href?: string;
 };
 
-export const gallery: GalleryItem[] = [
-  ...works.map((w) => ({
-    src: `/gallery/works/${w.file}`,
-    alt: `${w.title} — работа ученика изостудии Izo Studio в Жодино${w.technique ? `, ${w.technique}` : ''}`,
-    caption: w.title,
-  })),
-  { src: '/gallery/preview1.jpg', href: 'https://www.instagram.com/p/DNyCnjM0Nwv/', alt: 'Работа ученика изостудии Izo Studio — живопись' },
-  { src: '/gallery/preview2.jpg', href: 'https://www.instagram.com/izo_studia_zhodino/p/DNsaTHzULTI/', alt: 'Работа ученика изостудии Izo Studio — натюрморт' },
-  { src: '/gallery/preview3.jpg', href: 'https://www.instagram.com/izo_studia_zhodino/p/DN5R6IrCN51/', alt: 'Работа ученика изостудии Izo Studio — графика' },
-  { src: '/gallery/preview4.jpg', href: 'https://www.instagram.com/p/DNU7DyIonZe/', alt: 'Работа ученика изостудии Izo Studio — пейзаж' },
-  { src: '/gallery/preview5.jpg', href: 'https://www.instagram.com/p/DNTVXOOIzdL/', alt: 'Работа ученика изостудии Izo Studio — портрет' },
-  { src: '/gallery/preview6.jpg', href: 'https://www.instagram.com/p/DNTkhcNOnzM/', alt: 'Работа ученика изостудии Izo Studio — композиция' },
-  { src: '/gallery/preview7.jpg', href: 'https://www.instagram.com/p/DNlcNAOoDTY/', alt: 'Работа ученика изостудии Izo Studio — акварель' },
-  { src: '/gallery/preview8.jpg', href: 'https://www.instagram.com/p/DN5Rf2lCCk6/', alt: 'Работа ученика изостудии Izo Studio — пастель' },
-  { src: '/gallery/preview9.jpg', href: 'https://www.instagram.com/p/DRm_EplCKyh/', alt: 'Работа ученика изостудии Izo Studio — масло' },
-  { src: '/gallery/preview10.webp', href: 'https://www.instagram.com/p/DRPZ5LEiEx5/', alt: 'Работа ученика изостудии Izo Studio — этюд' },
-  { src: '/gallery/preview11.webp', href: 'https://www.instagram.com/p/DRhE-vJCA_7/', alt: 'Работа ученика изостудии Izo Studio — рисунок' },
-  { src: '/gallery/preview12.webp', href: 'https://www.instagram.com/p/DRPZsgXiDJT/', alt: 'Работа ученика изостудии Izo Studio — набросок' },
-];
+type WorkItem = { type: 'work'; file: string; title: string; technique?: string };
+type InstagramItem = { type: 'instagram'; src: string; href: string; alt: string; title: string };
+
+const galleryData = rawGallery as (WorkItem | InstagramItem)[];
+
+export const gallery: GalleryItem[] = galleryData.map((item) =>
+  item.type === 'work'
+    ? {
+        src: `/gallery/works/${item.file}`,
+        alt: `${item.title} — работа ученика изостудии Izo Studio в Жодино${item.technique ? `, ${item.technique}` : ''}`,
+        caption: item.title,
+      }
+    : {
+        src: item.src,
+        href: item.href,
+        alt: item.alt,
+        caption: item.title,
+      },
+);
 
 export const schedule = scheduleData;
 

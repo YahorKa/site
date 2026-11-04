@@ -1,0 +1,104 @@
+[
+  {
+    "type": "work",
+    "file": "lisenok-zont.jpg",
+    "title": "Лисёнок под зонтом",
+    "technique": "гуашь"
+  },
+  {
+    "type": "work",
+    "file": "prividenie-mella.jpg",
+    "title": "Привидение на метле",
+    "technique": "гуашь, акварель"
+  },
+  {
+    "type": "work",
+    "file": "sova-pismo.jpg",
+    "title": "Сова с письмом",
+    "technique": "гуашь"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview1.jpg",
+    "href": "https://www.instagram.com/p/DNyCnjM0Nwv/",
+    "alt": "Работа ученика изостудии Izo Studio — живопись",
+    "title": "Живопись"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview2.jpg",
+    "href": "https://www.instagram.com/izo_studia_zhodino/p/DNsaTHzULTI/",
+    "alt": "Работа ученика изостудии Izo Studio — натюрморт",
+    "title": "Натюрморт"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview3.jpg",
+    "href": "https://www.instagram.com/izo_studia_zhodino/p/DN5R6IrCN51/",
+    "alt": "Работа ученика изостудии Izo Studio — графика",
+    "title": "Графика"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview4.jpg",
+    "href": "https://www.instagram.com/p/DNU7DyIonZe/",
+    "alt": "Работа ученика изостудии Izo Studio — пейзаж",
+    "title": "Пейзаж"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview5.jpg",
+    "href": "https://www.instagram.com/p/DNTVXOOIzdL/",
+    "alt": "Работа ученика изостудии Izo Studio — портрет",
+    "title": "Портрет"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview6.jpg",
+    "href": "https://www.instagram.com/p/DNTkhcNOnzM/",
+    "alt": "Работа ученика изостудии Izo Studio — композиция",
+    "title": "Композиция"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview7.jpg",
+    "href": "https://www.instagram.com/p/DNlcNAOoDTY/",
+    "alt": "Работа ученика изостудии Izo Studio — акварель",
+    "title": "Акварель"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview8.jpg",
+    "href": "https://www.instagram.com/p/DN5Rf2lCCk6/",
+    "alt": "Работа ученика изостудии Izo Studio — пастель",
+    "title": "Пастель"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview9.jpg",
+    "href": "https://www.instagram.com/p/DRm_EplCKyh/",
+    "alt": "Работа ученика изостудии Izo Studio — масло",
+    "title": "Масло"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview10.webp",
+    "href": "https://www.instagram.com/p/DRPZ5LEiEx5/",
+    "alt": "Работа ученика изостудии Izo Studio — этюд",
+    "title": "Этюд"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview11.webp",
+    "href": "https://www.instagram.com/p/DRhE-vJCA_7/",
+    "alt": "Работа ученика изостудии Izo Studio — рисунок",
+    "title": "Рисунок"
+  },
+  {
+    "type": "instagram",
+    "src": "/gallery/preview12.webp",
+    "href": "https://www.instagram.com/p/DRPZsgXiDJT/",
+    "alt": "Работа ученика изостудии Izo Studio — набросок",
+    "title": "Набросок"
+  }
+]

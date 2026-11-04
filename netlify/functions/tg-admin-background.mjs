@@ -26,7 +26,7 @@ const ALLOWED = (process.env.ADMIN_CHAT_IDS || '-5478222453')
   .filter(Boolean);
 
 const PATHS = {
-  works: 'src/data/works.json',
+  gallery: 'src/data/gallery.json',
   prices: 'src/data/prices.json',
   schedule: 'src/data/schedule.json',
   images: 'public/gallery/works',
@@ -139,13 +139,16 @@ function helpText() {
 }
 
 async function listAll(chatId) {
-  const works = (await readJson(PATHS.works)).data;
+  const items = (await readJson(PATHS.gallery)).data;
   const prices = (await readJson(PATHS.prices)).data;
   const schedule = (await readJson(PATHS.schedule)).data;
 
-  const lines = ['<b>Работы</b>'];
-  if (works.length === 0) lines.push('— пока пусто');
-  works.forEach((w, i) => lines.push(`${i + 1}. ${esc(w.title)}${w.technique ? ` <i>(${esc(w.technique)})</i>` : ''}`));
+  const lines = [`<b>Галерея</b> — ${items.length} работ`];
+  items.forEach((w, i) => {
+    const mark = w.type === 'work' ? '🖼' : '📷';
+    const tech = w.technique ? ` <i>(${esc(w.technique)})</i>` : '';
+    lines.push(`${i + 1}. ${mark} ${esc(w.title)}${tech}`);
+  });
 
   lines.push('', '<b>Цены</b>');
   prices.forEach((p, i) => lines.push(`${i + 1}. ${esc(p.title)} — <b>${esc(p.price)}</b>`));
@@ -182,20 +185,20 @@ async function addWork(chatId, message) {
 
   const slug = slugify(title);
   let fileName = `${slug}.jpg`;
-  const existing = await readJson(PATHS.works);
+  const existing = await readJson(PATHS.gallery);
 
   // имя файла не должно совпасть с уже существующим
   let n = 2;
-  while (existing.data.some((w) => w.file === fileName)) {
+  while (existing.data.some((w) => w.type === 'work' && w.file === fileName)) {
     fileName = `${slug}-${n}.jpg`;
     n += 1;
   }
 
   await ghPut(`${PATHS.images}/${fileName}`, buffer, `Галерея: ${title}`);
 
-  existing.data.push({ file: fileName, title, technique });
+  existing.data.push({ type: 'work', file: fileName, title, technique });
   await ghPut(
-    PATHS.works,
+    PATHS.gallery,
     JSON.stringify(existing.data, null, 2) + '\n',
     `Галерея: добавить «${title}»`,
     existing.sha,
@@ -206,20 +209,29 @@ async function addWork(chatId, message) {
 
 async function deleteWork(chatId, arg) {
   const index = Number(arg) - 1;
-  const file = await readJson(PATHS.works);
+  const file = await readJson(PATHS.gallery);
   if (!Number.isInteger(index) || index < 0 || index >= file.data.length) {
     await tg(chatId, `Нет работы с таким номером. Всего работ: ${file.data.length}. Смотрите /list`);
     return;
   }
 
   const [removed] = file.data.splice(index, 1);
-  await ghPut(PATHS.works, JSON.stringify(file.data, null, 2) + '\n', `Галерея: удалить «${removed.title}»`, file.sha);
+  await ghPut(
+    PATHS.gallery,
+    JSON.stringify(file.data, null, 2) + '\n',
+    `Галерея: убрать «${removed.title}»`,
+    file.sha,
+  );
 
-  const imagePath = `${PATHS.images}/${removed.file}`;
-  const image = await ghGet(imagePath);
-  if (image) await ghDelete(imagePath, `Галерея: удалить файл ${removed.file}`, image.sha);
+  // файл с картинкой удаляем только у загруженных работ
+  if (removed.type === 'work') {
+    const imagePath = `${PATHS.images}/${removed.file}`;
+    const image = await ghGet(imagePath);
+    if (image) await ghDelete(imagePath, `Галерея: удалить файл ${removed.file}`, image.sha);
+  }
 
-  await tg(chatId, `🗑 Удалил «${esc(removed.title)}».`);
+  const note = removed.type === 'instagram' ? '\n(пост в Instagram не тронут, работа убрана только с сайта)' : '';
+  await tg(chatId, `🗑 Убрал «${esc(removed.title)}»${note}`);
 }
 
 async function setPrice(chatId, arg) {
