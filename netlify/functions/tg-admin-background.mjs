@@ -165,8 +165,13 @@ async function addWork(chatId, message) {
     return;
   }
 
-  const fileId = photos ? photos[photos.length - 1].file_id : doc.file_id;
   const caption = (message.caption || '').trim();
+  if (!caption) {
+    await tg(chatId, 'Добавьте подпись к фото — иначе не знаю, как назвать работу.\nФормат: <i>Название; техника</i>');
+    return;
+  }
+
+  const fileId = photos ? photos[photos.length - 1].file_id : doc.file_id;
   const [titleRaw, techniqueRaw] = caption.split(';').map((s) => s.trim());
   const title = titleRaw || 'Без названия';
   const technique = techniqueRaw || '';
