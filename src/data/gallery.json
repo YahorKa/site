@@ -24,6 +24,12 @@
     "technique": "гуашь"
   },
   {
+    "type": "work",
+    "file": "krolik.jpg",
+    "title": "Кролик",
+    "technique": "цветные карандаши"
+  },
+  {
     "type": "instagram",
     "src": "/gallery/preview1.jpg",
     "href": "https://www.instagram.com/p/DNyCnjM0Nwv/",
