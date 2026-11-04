@@ -196,7 +196,14 @@ async function addWork(chatId, message) {
 
   await ghPut(`${PATHS.images}/${fileName}`, buffer, `Галерея: ${title}`);
 
-  existing.data.push({ type: 'work', file: fileName, title, technique });
+  // новые работы ставим после уже загруженных, но перед записями из Instagram
+  const lastWork = existing.data.map((w) => w.type).lastIndexOf('work');
+  existing.data.splice(lastWork === -1 ? 0 : lastWork + 1, 0, {
+    type: 'work',
+    file: fileName,
+    title,
+    technique,
+  });
   await ghPut(
     PATHS.gallery,
     JSON.stringify(existing.data, null, 2) + '\n',
