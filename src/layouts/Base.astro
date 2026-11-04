@@ -15,6 +15,47 @@ const { title, description = site.description, image = '/preview.png' } = Astro.
 const siteUrl = Astro.site ?? new URL(site.url);
 const canonical = new URL(Astro.url.pathname, siteUrl);
 const ogImage = new URL(image, siteUrl);
+
+const businessLd = {
+  '@context': 'https://schema.org',
+  '@type': ['EducationalOrganization', 'LocalBusiness'],
+  name: 'Izo Studio',
+  alternateName: 'Изостудия Izo Studio',
+  description: site.description,
+  url: siteUrl.href,
+  telephone: '+375257187257',
+  image: new URL('/preview.png', siteUrl).href,
+  priceRange: '20–100 BYN',
+  currenciesAccepted: 'BYN',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'ул. Деревянко, 3',
+    addressLocality: 'Жодино',
+    postalCode: '222160',
+    addressCountry: 'BY',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 54.0938,
+    longitude: 28.3213,
+  },
+  areaServed: { '@type': 'City', name: 'Жодино' },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '10:00',
+      closes: '19:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday', 'Sunday'],
+      opens: '11:00',
+      closes: '16:00',
+    },
+  ],
+  sameAs: site.socials.map((s) => s.href),
+};
 ---
 
 <!doctype html>
@@ -51,6 +92,8 @@ const ogImage = new URL(image, siteUrl);
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json" set:html={JSON.stringify(businessLd)} />
 
     <slot name="head" />
 
@@ -96,5 +139,15 @@ const ogImage = new URL(image, siteUrl);
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Цель «звонок»: клик по любому телефону на сайте
+      document.addEventListener('click', (event) => {
+        const target = event.target as Element | null;
+        const link = target?.closest?.('a[href^="tel:"]');
+        const ym = (window as unknown as { ym?: (...args: unknown[]) => void }).ym;
+        if (link && typeof ym === 'function') ym(103968612, 'reachGoal', 'call');
+      });
+    </script>
   </body>
 </html>

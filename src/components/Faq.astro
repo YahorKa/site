@@ -1,0 +1,49 @@
+---
+import faq from '../data/faq.json';
+
+interface Props {
+  title?: string;
+  eyebrow?: string;
+}
+
+const { title = 'Частые вопросы', eyebrow = 'Вопросы' } = Astro.props;
+const items = faq as { q: string; a: string }[];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+
+<section class="container-page py-16 lg:py-20">
+  <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+    <div>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 class="mt-3 text-3xl sm:text-4xl">{title}</h2>
+      <p class="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+        Не нашли ответ — позвоните или напишите в Telegram, ответим в течение дня.
+      </p>
+    </div>
+
+    <div class="space-y-3">
+      {
+        items.map((item) => (
+          <details class="group rounded-2xl border border-line bg-white/40 px-5 py-4 open:bg-white/70">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-medium [&::-webkit-details-marker]:hidden">
+              {item.q}
+              <span class="shrink-0 text-lg text-muted transition-transform duration-200 group-open:rotate-45">+</span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-muted">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

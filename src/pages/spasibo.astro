@@ -15,4 +15,12 @@ import { site } from '../data/site';
     </p>
     <a href="/" class="btn-primary mt-8">На главную</a>
   </section>
+
+  <script>
+    // Цель «заявка»: страница открывается только после успешной отправки формы
+    window.addEventListener('load', () => {
+      const ym = (window as unknown as { ym?: (...args: unknown[]) => void }).ym;
+      if (typeof ym === 'function') ym(103968612, 'reachGoal', 'zayavka');
+    });
+  </script>
 </Base>
