@@ -31,9 +31,11 @@ export const site = {
 
 export const nav = [
   { label: 'Главная', href: '/' },
-  { label: 'О студии', href: '/about' },
+  { label: 'Детям', href: '/detyam' },
+  { label: 'Взрослым', href: '/vzroslym' },
   { label: 'Занятия', href: '/services' },
   { label: 'Галерея', href: '/gallery' },
+  { label: 'О студии', href: '/about' },
   { label: 'Контакты', href: '/contacts' },
 ];
 
