@@ -140,14 +140,5 @@ const businessLd = {
     </main>
     <Footer />
 
-    <script>
-      // Цель «звонок»: клик по любому телефону на сайте
-      document.addEventListener('click', (event) => {
-        const target = event.target as Element | null;
-        const link = target?.closest?.('a[href^="tel:"]');
-        const ym = (window as unknown as { ym?: (...args: unknown[]) => void }).ym;
-        if (link && typeof ym === 'function') ym(103968612, 'reachGoal', 'call');
-      });
-    </script>
   </body>
 </html>

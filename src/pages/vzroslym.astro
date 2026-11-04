@@ -1,0 +1,196 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import faq from '../data/faq-vzroslym.json';
+import { site, prices, teacher } from '../data/site';
+
+const title = 'Курсы рисования для взрослых в Жодино — с нуля, вечерняя группа | Izo Studio';
+const description =
+  'Рисование для взрослых в Жодино: вечерняя группа до 8 человек, занятия с нуля. Живопись и графика, индивидуально 45 минут — 20 руб.';
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Главная', item: 'https://izostudio.by/' },
+    { '@type': 'ListItem', position: 2, name: 'Взрослым', item: 'https://izostudio.by/vzroslym/' },
+  ],
+};
+---
+
+<Base title={title} description={description} image="/gallery/works/sova-pismo.jpg">
+  <section class="container-page grid gap-12 pt-10 pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-16 lg:pb-20">
+    <div>
+      <p class="eyebrow">Взрослым · вечерняя группа</p>
+      <h1 class="mt-5 text-[2.6rem] leading-[1.0] sm:text-5xl lg:text-6xl">
+        Рисование<br />
+        <span class="italic text-clay">для взрослых</span><br />
+        в Жодино
+      </h1>
+      <p class="mt-6 max-w-md text-base leading-relaxed text-muted">
+        Отдельная группа до 8 человек, занятия вечером. Для тех, кто никогда не рисовал — или
+        рисовал в школе и хочет вернуться.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/zayavka" class="btn-primary">Записаться на занятие</a>
+        <a href="/gallery" class="btn-ghost">Работы учеников</a>
+      </div>
+      <dl class="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-6">
+        <div>
+          <dt class="font-display text-2xl">до 8</dt>
+          <dd class="mt-1 text-xs leading-snug text-muted">человек в группе</dd>
+        </div>
+        <div>
+          <dt class="font-display text-2xl">вечер</dt>
+          <dd class="mt-1 text-xs leading-snug text-muted">время занятий</dd>
+        </div>
+        <div>
+          <dt class="font-display text-2xl">20 руб</dt>
+          <dd class="mt-1 text-xs leading-snug text-muted">индивидуально, 45 мин</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="overflow-hidden rounded-[2rem] border border-line">
+      <img
+        src="/gallery/works/sova-pismo.jpg"
+        alt="Работа ученика изостудии в Жодино — сова с письмом, гуашь"
+        width="896"
+        height="1120"
+        class="aspect-4/5 w-full object-cover"
+      />
+    </div>
+  </section>
+
+  <section class="border-y border-line bg-cream/40">
+    <div class="container-page py-16 lg:py-20">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <p class="eyebrow">С нуля</p>
+          <h2 class="mt-3 text-3xl sm:text-4xl">«Я не умею рисовать» — самое частое, что мы слышим</h2>
+        </div>
+        <div class="space-y-4 text-base leading-relaxed text-muted">
+          <p>
+            Уметь рисовать до первого занятия не нужно. Взрослая группа начинается с того же, с чего
+            и детская: материалы, рука, простая форма. Просто темп другой и задания серьёзнее.
+          </p>
+          <p>
+            Никто не сравнивает ваши работы с чужими. Задача — разобраться, как устроены цвет, свет и
+            композиция, и получить от процесса удовольствие, а не оценку.
+          </p>
+          <p>
+            В группе до 8 человек, поэтому педагог успевает подойти к каждому и показать приём
+            индивидуально.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-16 lg:py-20">
+    <p class="eyebrow">Что на занятиях</p>
+    <h2 class="mt-3 max-w-xl text-3xl sm:text-4xl">Живопись и графика, без случайных заданий</h2>
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="rounded-2xl border border-line p-6">
+        <h3 class="text-xl">Материалы</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">Гуашь, акварель, пастель, карандаш — пробуем и выбираем, что ближе.</p>
+      </article>
+      <article class="rounded-2xl border border-line p-6">
+        <h3 class="text-xl">Натюрморт и пейзаж</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">Работа с натуры: как построить форму, поймать свет и передать настроение.</p>
+      </article>
+      <article class="rounded-2xl border border-line p-6">
+        <h3 class="text-xl">Композиция</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">Как расположить объекты в листе, чтобы работа «держалась» и не разваливалась.</p>
+      </article>
+      <article class="rounded-2xl border border-line p-6">
+        <h3 class="text-xl">Индивидуальный темп</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">Можно идти по общей программе или принести свою идею — обсудим и сделаем.</p>
+      </article>
+      <article class="rounded-2xl border border-line p-6">
+        <h3 class="text-xl">Вечернее время</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">Занятия после работы. Точное время и свободные места уточняйте при записи.</p>
+      </article>
+      <article class="rounded-2xl border border-line p-6">
+        <h3 class="text-xl">Индивидуально</h3>
+        <p class="mt-2 text-sm leading-relaxed text-muted">Если нужен свой график или подготовка к поступлению — 45 минут, 20 руб.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="border-y border-line bg-cream/40">
+    <div class="container-page grid gap-10 py-14 lg:grid-cols-2 lg:py-16">
+      <div>
+        <p class="eyebrow">Стоимость</p>
+        <h2 class="mt-3 text-3xl">Цены</h2>
+        <div class="mt-6 space-y-3">
+          {prices.map((p) => (
+            <div class="flex items-center justify-between gap-4 rounded-2xl border border-line bg-paper p-5">
+              <div>
+                <p class="text-base">{p.title}</p>
+                <p class="mt-1 text-xs text-muted">{p.detail}</p>
+              </div>
+              <p class="whitespace-nowrap font-display text-2xl">{p.price}</p>
+            </div>
+          ))}
+        </div>
+        <p class="mt-4 text-xs leading-relaxed text-muted">
+          Оплата в студии. Материалы на первое занятие приносить не нужно.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">Как проходит первое занятие</p>
+        <h2 class="mt-3 text-3xl">Знакомство</h2>
+        <ol class="mt-6 space-y-4 text-sm leading-relaxed text-muted">
+          <li><span class="font-display text-xl text-clay">01</span> — говорим о вашем опыте и о том, что хочется рисовать;</li>
+          <li><span class="font-display text-xl text-clay">02</span> — пробуем материалы и делаем небольшую работу;</li>
+          <li><span class="font-display text-xl text-clay">03</span> — подбираем группу и время, если всё подходит.</li>
+        </ol>
+        <a href="/zayavka" class="btn-primary mt-8">Записаться на занятие</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page py-16 lg:py-20">
+    <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+      <div class="overflow-hidden rounded-[2rem] border border-line">
+        <img
+          src={teacher.photo}
+          alt={`${teacher.name} — преподаватель изостудии в Жодино`}
+          width="700"
+          height="875"
+          class="aspect-4/5 w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div>
+        <p class="eyebrow">Педагог</p>
+        <h2 class="mt-3 text-3xl sm:text-4xl">{teacher.name}</h2>
+        <p class="mt-2 text-sm text-muted">{teacher.role}</p>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-muted">{teacher.bio}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/about" class="btn-ghost">О студии</a>
+          <a href="/contacts" class="btn-ghost">Как добраться</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faq} title="Вопросы взрослых учеников" />
+
+  <section class="container-page pb-20">
+    <div class="rounded-[2rem] border border-line bg-cream px-6 py-12 text-center sm:px-12 sm:py-16">
+      <h2 class="mx-auto mt-3 max-w-2xl text-3xl sm:text-4xl">Приходите на первое занятие</h2>
+      <p class="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted">
+        Оставьте заявку или позвоните: {site.phone}
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/zayavka" class="btn-primary">Оставить заявку</a>
+        <a href={site.phoneHref} class="btn-ghost">Позвонить</a>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+</Base>

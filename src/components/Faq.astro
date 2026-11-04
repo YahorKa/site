@@ -1,13 +1,16 @@
 ---
 import faq from '../data/faq.json';
 
+type FaqItem = { q: string; a: string };
+
 interface Props {
   title?: string;
   eyebrow?: string;
+  items?: FaqItem[];
 }
 
-const { title = 'Частые вопросы', eyebrow = 'Вопросы' } = Astro.props;
-const items = faq as { q: string; a: string }[];
+const { title = 'Частые вопросы', eyebrow = 'Вопросы', items: customItems } = Astro.props;
+const items = (customItems ?? faq) as FaqItem[];
 
 const jsonLd = {
   '@context': 'https://schema.org',
