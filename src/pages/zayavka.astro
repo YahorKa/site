@@ -24,11 +24,20 @@ import { site } from '../data/site';
     </div>
 
     <form
+      id="zayavka-form"
       name="zayavka"
       method="POST"
       action="/.netlify/functions/zayavka"
       class="rounded-[1.5rem] border border-line bg-white/50 p-6 sm:p-8"
     >
+      <div
+        id="form-error"
+        class="mb-5 hidden rounded-xl border border-clay/30 bg-clay/5 px-4 py-3 text-sm text-clay"
+        role="alert"
+      >
+        Не получилось отправить заявку. Проверьте номер телефона или позвоните нам.
+      </div>
+
       <p class="hidden">
         <label>Не заполняйте это поле: <input name="bot-field" /></label>
       </p>
@@ -72,11 +81,18 @@ import { site } from '../data/site';
               name="phone"
               required
               autocomplete="tel-national"
-              inputmode="tel"
+              inputmode="numeric"
+              maxlength="12"
               placeholder="25 718-72-57"
+              aria-describedby="phone-hint"
             />
           </div>
-          <p class="mt-1.5 text-xs text-muted">Без кода страны — например, 25 718-72-57</p>
+          <p id="phone-hint" class="mt-1.5 text-xs text-muted">
+            Код оператора 25, 29, 33 или 44 — например, 25 718-72-57
+          </p>
+          <p id="phone-error" class="mt-1.5 hidden text-xs text-clay">
+            Проверьте номер: 9 цифр, код оператора 25, 29, 33 или 44.
+          </p>
         </div>
 
         <div class="sm:col-span-2">
@@ -92,7 +108,89 @@ import { site } from '../data/site';
         </span>
       </label>
 
-      <button type="submit" class="btn-primary mt-6 w-full sm:w-auto">Отправить заявку</button>
+      <button id="submit-btn" type="submit" class="btn-primary mt-6 w-full sm:w-auto">
+        Отправить заявку
+      </button>
+      <p id="form-sending" class="mt-3 hidden text-xs text-muted">Отправляем заявку…</p>
     </form>
   </section>
+
+  <script>
+    const form = document.getElementById('zayavka-form') as HTMLFormElement | null;
+    const phone = document.getElementById('phone') as HTMLInputElement | null;
+    const phoneError = document.getElementById('phone-error');
+    const formError = document.getElementById('form-error');
+    const sending = document.getElementById('form-sending');
+    const button = document.getElementById('submit-btn') as HTMLButtonElement | null;
+
+    // Белорусские коды операторов
+    const CODES = ['25', '29', '33', '44'];
+    const isValidPhone = (value: string) => {
+      const digits = value.replace(/\D/g, '');
+      return /^\d{9}$/.test(digits) && CODES.includes(digits.slice(0, 2));
+    };
+
+    // Показываем баннер, если сервер вернул сюда после неудачной проверки
+    if (new URLSearchParams(location.search).get('error') === 'phone') {
+      formError?.classList.remove('hidden');
+      phoneError?.classList.remove('hidden');
+    }
+
+    // Лёгкое форматирование: 25 718-72-57
+    phone?.addEventListener('input', () => {
+      const digits = phone.value.replace(/\D/g, '').slice(0, 9);
+      let out = digits;
+      if (digits.length > 2) out = `${digits.slice(0, 2)} ${digits.slice(2)}`;
+      if (digits.length > 5) out = `${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5)}`;
+      if (digits.length > 7) out = `${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5, 7)}-${digits.slice(7)}`;
+      phone.value = out;
+      phoneError?.classList.add('hidden');
+    });
+
+    let isSending = false;
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (isSending) return;
+
+      if (!phone || !isValidPhone(phone.value)) {
+        phoneError?.classList.remove('hidden');
+        phone?.focus();
+        return;
+      }
+
+      isSending = true;
+      formError?.classList.add('hidden');
+      sending?.classList.remove('hidden');
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Отправляем…';
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>),
+          redirect: 'follow',
+        });
+
+        // Функция отвечает редиректом: /spasibo — успех, /oshibka — сбой
+        if (response.url.includes('/spasibo')) {
+          location.assign('/spasibo');
+          return;
+        }
+
+        throw new Error('server rejected');
+      } catch {
+        formError?.classList.remove('hidden');
+        sending?.classList.add('hidden');
+        isSending = false;
+        if (button) {
+          button.disabled = false;
+          button.textContent = 'Отправить заявку';
+        }
+      }
+    });
+  </script>
 </Base>

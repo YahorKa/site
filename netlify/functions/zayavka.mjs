@@ -8,16 +8,28 @@
 
 const REQUIRED = ['parent_name', 'child_name', 'child_age', 'direction', 'phone'];
 
+// Беларусь: 9 цифр, код оператора 25 / 29 / 33 / 44
+const BY_CODES = ['25', '29', '33', '44'];
+
+function localPhone(value) {
+  let digits = String(value ?? '').replace(/\D/g, '');
+  if (digits.startsWith('375')) digits = digits.slice(3);
+  else if (digits.startsWith('80')) digits = digits.slice(2);
+  return digits;
+}
+
+function isValidPhone(value) {
+  const digits = localPhone(value);
+  return /^\d{9}$/.test(digits) && BY_CODES.includes(digits.slice(0, 2));
+}
+
 function normalizePhone(value) {
-  const digits = String(value ?? '').replace(/\D/g, '');
+  const digits = localPhone(value);
   if (!digits) return '';
-  let local = digits.startsWith('375') ? digits.slice(3) : digits;
-  if (local.startsWith('80')) local = local.slice(2);
-  local = local.slice(0, 9);
   const formatted =
-    local.length === 9
-      ? `${local.slice(0, 2)} ${local.slice(2, 5)}-${local.slice(5, 7)}-${local.slice(7, 9)}`
-      : local;
+    digits.length === 9
+      ? `${digits.slice(0, 2)} ${digits.slice(2, 5)}-${digits.slice(5, 7)}-${digits.slice(7, 9)}`
+      : digits;
   return `+375 ${formatted}`;
 }
 
@@ -95,6 +107,11 @@ export async function handler(event) {
   if (missing.length) {
     console.warn('zayavka: не хватает полей', missing.join(', '));
     return redirect('/oshibka');
+  }
+
+  if (!isValidPhone(data.phone)) {
+    console.warn('zayavka: некорректный телефон', data.phone);
+    return redirect('/zayavka?error=phone');
   }
 
   const token = process.env.TELEGRAM_BOT_TOKEN;
