@@ -2,9 +2,14 @@
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 import { site, directions, gallery, steps, teacher, schedule, prices } from '../data/site';
+
+const uploaded = gallery.filter((item) => !item.href);
+const fromInstagram = gallery.filter((item) => item.href);
+const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0, 6);
 ---
 
 <Base title="Изостудия в Жодино — живопись, графика, лепка | Izo Studio">
+
   <!-- Hero -->
   <section class="container-page grid gap-12 pt-10 pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-16 lg:pb-24">
     <div>
@@ -41,21 +46,20 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
 
     <div class="relative">
       <div class="overflow-hidden rounded-[2rem] border border-line bg-cream">
-        <video
-          class="aspect-4/5 w-full object-cover"
-          data-hero-video
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="metadata"
-          poster="/video/hero-poster.jpg"
-          width="896"
-          height="1120"
-          aria-label="Работы учеников изостудии Izo Studio в Жодино"
-        >
-          <source src="/video/hero.mp4" type="video/mp4" />
-        </video>
+        <div class="hero-slides relative aspect-4/5 w-full" data-hero-slides data-interval="4000">
+          {
+            heroImages.map((item, i) => (
+              <img
+                src={item.src}
+                alt={item.alt}
+                width="896"
+                height="1120"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                class:list={['hero-slide', i === 0 ? 'is-active' : '']}
+              />
+            ))
+          }
+        </div>
       </div>
       <div class="absolute -bottom-6 -left-4 hidden w-52 rounded-2xl border border-line bg-paper p-5 sm:block">
         <p class="font-display text-lg leading-tight">Начнём со знакомства</p>
@@ -368,11 +372,32 @@ import { site, directions, gallery, steps, teacher, schedule, prices } from '../
       });
     }
 
-    // Видео в первом экране не крутим, если в системе включено «уменьшить движение».
-    const heroVideo = document.querySelector('[data-hero-video]');
-    if (heroVideo && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      heroVideo.pause();
-      heroVideo.removeAttribute('autoplay');
+    // Первый экран: по кругу показываем работы из галереи.
+    const slideshow = document.querySelector('[data-hero-slides]');
+    if (slideshow) {
+      const slides = [...slideshow.querySelectorAll('img')];
+      const interval = Number(slideshow.getAttribute('data-interval')) || 4000;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (slides.length > 1 && !reduceMotion.matches) {
+        let index = 0;
+        let timer = setInterval(next, interval);
+
+        function next() {
+          slides[index].classList.remove('is-active');
+          index = (index + 1) % slides.length;
+          slides[index].classList.add('is-active');
+        }
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            clearInterval(timer);
+          } else {
+            clearInterval(timer);
+            timer = setInterval(next, interval);
+          }
+        });
+      }
     }
   </script>
 </Base>
