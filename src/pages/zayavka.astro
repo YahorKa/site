@@ -42,19 +42,33 @@ import { site } from '../data/site';
         <label>Не заполняйте это поле: <input name="bot-field" /></label>
       </p>
 
+      <fieldset class="mb-6">
+        <legend class="label">Кто будет заниматься</legend>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="cursor-pointer rounded-xl border border-line bg-white/60 px-4 py-3 text-center text-sm transition-colors has-checked:border-ink has-checked:bg-cream">
+            <input type="radio" name="student_type" value="child" checked class="sr-only" />
+            Ребёнок
+          </label>
+          <label class="cursor-pointer rounded-xl border border-line bg-white/60 px-4 py-3 text-center text-sm transition-colors has-checked:border-ink has-checked:bg-cream">
+            <input type="radio" name="student_type" value="adult" class="sr-only" />
+            Взрослый
+          </label>
+        </div>
+      </fieldset>
+
       <div class="grid gap-5 sm:grid-cols-2">
-        <div>
+        <div id="parent-field">
           <label class="label" for="parent_name">Имя родителя</label>
           <input class="field" id="parent_name" type="text" name="parent_name" required autocomplete="name" />
         </div>
 
         <div>
-          <label class="label" for="child_name">Имя ученика</label>
+          <label class="label" for="child_name" id="child-label">Имя ученика</label>
           <input class="field" id="child_name" type="text" name="child_name" required />
         </div>
 
         <div>
-          <label class="label" for="child_age">Возраст</label>
+          <label class="label" for="child_age" id="age-label">Возраст</label>
           <input class="field" id="child_age" type="number" name="child_age" min="3" max="99" required />
         </div>
 
@@ -122,6 +136,28 @@ import { site } from '../data/site';
     const formError = document.getElementById('form-error');
     const sending = document.getElementById('form-sending');
     const button = document.getElementById('submit-btn') as HTMLButtonElement | null;
+
+    // Переключатель «ребёнок / взрослый»
+    const studentRadios = form ? [...form.querySelectorAll('input[name="student_type"]')] : [];
+    const parentField = document.getElementById('parent-field');
+    const parentInput = document.getElementById('parent_name') as HTMLInputElement | null;
+    const childLabel = document.getElementById('child-label');
+    const ageLabel = document.getElementById('age-label');
+    const ageInput = document.getElementById('child_age') as HTMLInputElement | null;
+
+    function applyStudentType(type: string) {
+      const isAdult = type === 'adult';
+      parentField?.classList.toggle('hidden', isAdult);
+      if (parentInput) parentInput.required = !isAdult;
+      if (childLabel) childLabel.textContent = isAdult ? 'Ваше имя' : 'Имя ученика';
+      if (ageLabel) ageLabel.textContent = isAdult ? 'Возраст (необязательно)' : 'Возраст';
+      if (ageInput) ageInput.required = !isAdult;
+    }
+
+    studentRadios.forEach((radio) => {
+      radio.addEventListener('change', () => applyStudentType((radio as HTMLInputElement).value));
+    });
+    applyStudentType('child');
 
     // Белорусские коды операторов
     const CODES = ['25', '29', '33', '44'];

@@ -6,7 +6,8 @@
 //
 // Форма на /zayavka отправляет POST сюда, в ответ — редирект на /spasibo.
 
-const REQUIRED = ['parent_name', 'child_name', 'child_age', 'direction', 'phone'];
+const REQUIRED_CHILD = ['parent_name', 'child_name', 'child_age', 'direction', 'phone'];
+const REQUIRED_ADULT = ['child_name', 'direction', 'phone'];
 
 // Беларусь: 9 цифр, код оператора 25 / 29 / 33 / 44
 const BY_CODES = ['25', '29', '33', '44'];
@@ -40,6 +41,17 @@ function esc(value = '') {
     .replace(/>/g, '&gt;');
 }
 
+// «7 лет», «34 года», «21 год»
+function years(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num) || num <= 0) return '';
+  const mod10 = num % 10;
+  const mod100 = num % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${num} год`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${num} года`;
+  return `${num} лет`;
+}
+
 function parseBody(event) {
   const raw = event.isBase64Encoded
     ? Buffer.from(event.body || '', 'base64').toString('utf8')
@@ -65,29 +77,41 @@ function redirect(location) {
 }
 
 function formatMessage(data) {
+  const adult = data.student_type === 'adult';
+  const age = String(data.child_age ?? '').trim();
+
   const lines = [
-    '🎨 <b>Новая заявка на занятие</b>',
+    adult ? '🎨 <b>Новая заявка — взрослая группа</b>' : '🎨 <b>Новая заявка на занятие</b>',
     '',
-    `<b>Родитель:</b> ${esc(data.parent_name)}`,
-    `<b>Ученик:</b> ${esc(data.child_name)}, ${esc(data.child_age)} лет`,
+  ];
+
+  if (adult) {
+    lines.push(`<b>Ученик:</b> ${esc(data.child_name)}${age ? `, ${years(age)}` : ''}`);
+  } else {
+    lines.push(`<b>Родитель:</b> ${esc(data.parent_name)}`);
+    lines.push(`<b>Ученик:</b> ${esc(data.child_name)}, ${years(data.child_age)}`);
+  }
+
+  lines.push(
     `<b>Направление:</b> ${esc(data.direction)}`,
     `<b>Телефон:</b> ${esc(normalizePhone(data.phone) || data.phone)}`,
-  ];
+  );
 
   if (data.comment && String(data.comment).trim()) {
     lines.push(`<b>Комментарий:</b> ${esc(String(data.comment).trim())}`);
   }
 
   // Шпаргалка для педагога: что сказать при знакомстве
-  const parent = String(data.parent_name ?? '').trim() || 'родитель';
   const child = String(data.child_name ?? '').trim() || 'ученик';
-  const age = String(data.child_age ?? '').trim();
+  const parent = String(data.parent_name ?? '').trim() || child;
 
   lines.push(
     '',
     '💬 <b>Что сказать при звонке</b>',
-    `— Здравствуйте, ${esc(parent)}! Это Анастасия, преподаватель изостудии Izo Studio.`,
-    `— Вы оставляли заявку: ${esc(child)}${age ? `, ${esc(age)} лет` : ''} — ${esc(data.direction)}.`,
+    `— Здравствуйте, ${esc(adult ? child : parent)}! Это Анастасия, преподаватель изостудии Izo Studio.`,
+    adult
+      ? `— Вы оставляли заявку на занятия для взрослых — ${esc(data.direction)}.`
+      : `— Вы оставляли заявку: ${esc(child)}${age ? `, ${years(age)}` : ''} — ${esc(data.direction)}.`,
     '— У нас есть утренняя и вечерняя группы — подскажу, куда удобнее ходить.',
     '— Первое занятие — знакомство: посмотрим уровень, попробуем материалы. Приносить ничего не нужно.',
     '— Если всё устроит, закрепим место в группе.',
@@ -118,7 +142,9 @@ export async function handler(event) {
     return redirect('/spasibo');
   }
 
-  const missing = REQUIRED.filter((key) => !String(data[key] ?? '').trim());
+  const isAdult = data.student_type === 'adult';
+  const required = isAdult ? REQUIRED_ADULT : REQUIRED_CHILD;
+  const missing = required.filter((key) => !String(data[key] ?? '').trim());
   if (missing.length) {
     console.warn('zayavka: не хватает полей', missing.join(', '));
     return redirect('/oshibka');
