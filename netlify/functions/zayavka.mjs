@@ -78,6 +78,21 @@ function formatMessage(data) {
     lines.push(`<b>Комментарий:</b> ${esc(String(data.comment).trim())}`);
   }
 
+  // Шпаргалка для педагога: что сказать при знакомстве
+  const parent = String(data.parent_name ?? '').trim() || 'родитель';
+  const child = String(data.child_name ?? '').trim() || 'ученик';
+  const age = String(data.child_age ?? '').trim();
+
+  lines.push(
+    '',
+    '💬 <b>Что сказать при звонке</b>',
+    `— Здравствуйте, ${esc(parent)}! Это Анастасия, преподаватель изостудии Izo Studio.`,
+    `— Вы оставляли заявку: ${esc(child)}${age ? `, ${esc(age)} лет` : ''} — ${esc(data.direction)}.`,
+    '— У нас есть утренняя и вечерняя группы — подскажу, куда удобнее ходить.',
+    '— Первое занятие — знакомство: посмотрим уровень, попробуем материалы. Приносить ничего не нужно.',
+    '— Если всё устроит, закрепим место в группе.',
+  );
+
   const now = new Date().toLocaleString('ru-RU', {
     timeZone: 'Europe/Minsk',
     day: '2-digit',
