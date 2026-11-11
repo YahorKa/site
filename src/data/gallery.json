@@ -42,6 +42,12 @@
     "technique": "гуашь"
   },
   {
+    "type": "work",
+    "file": "tigr.jpg",
+    "title": "Тигр",
+    "technique": "гуашь"
+  },
+  {
     "type": "instagram",
     "src": "/gallery/preview1.jpg",
     "href": "https://www.instagram.com/p/DNyCnjM0Nwv/",
