@@ -29,7 +29,10 @@ import { gallery } from '../data/site';
             <img
               src={item.src}
               alt={item.alt}
+              width={item.width}
+              height={item.height}
               loading={i < 4 ? 'eager' : 'lazy'}
+              decoding="async"
               class="w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <span class="pointer-events-none absolute inset-0 bg-ink/0 transition-colors group-hover:bg-ink/10" />
@@ -45,7 +48,7 @@ import { gallery } from '../data/site';
       <p class="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted">
         Начните с одного занятия — дальше будет видно.
       </p>
-      <a href="/zayavka" class="btn-primary mt-8">Записаться на занятие</a>
+      <a href="/zayavka/" class="btn-primary mt-8">Записаться на занятие</a>
     </div>
   </section>
 </Base>

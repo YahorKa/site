@@ -1,4 +1,6 @@
 import rawGallery from './gallery.json';
+import rawSizes from './gallery-sizes.json';
+import { readImageSize } from '../lib/image-size';
 import pricesData from './prices.json';
 import scheduleData from './schedule.json';
 
@@ -31,12 +33,12 @@ export const site = {
 
 export const nav = [
   { label: 'Главная', href: '/' },
-  { label: 'Детям', href: '/detyam' },
-  { label: 'Взрослым', href: '/vzroslym' },
-  { label: 'Занятия', href: '/services' },
-  { label: 'Галерея', href: '/gallery' },
-  { label: 'О студии', href: '/about' },
-  { label: 'Контакты', href: '/contacts' },
+  { label: 'Детям', href: '/detyam/' },
+  { label: 'Взрослым', href: '/vzroslym/' },
+  { label: 'Занятия', href: '/services/' },
+  { label: 'Галерея', href: '/gallery/' },
+  { label: 'О студии', href: '/about/' },
+  { label: 'Контакты', href: '/contacts/' },
 ];
 
 export const directions = [
@@ -98,6 +100,9 @@ export type GalleryItem = {
   src: string;
   alt: string;
   href?: string;
+  caption?: string;
+  width?: number;
+  height?: number;
 };
 
 type WorkItem = { type: 'work'; file: string; title: string; technique?: string };
@@ -105,18 +110,31 @@ type InstagramItem = { type: 'instagram'; src: string; href: string; alt: string
 
 const galleryData = rawGallery as (WorkItem | InstagramItem)[];
 
+// Размеры картинок нужны для width/height в <img> — иначе вёрстка «прыгает»
+// при загрузке. Читаем их из самих файлов на этапе сборки, поэтому новые работы,
+// загруженные через бота, сразу получают правильные пропорции.
+const sizeOf = (key: string, diskPath: string) => {
+  const size = readImageSize(`public${diskPath}`);
+  if (size) return size;
+  // Запасной вариант — заранее посчитанная карта (на случай нестандартного файла).
+  const cached = (rawSizes as Record<string, [number, number] | undefined>)[key];
+  return cached ? { width: cached[0], height: cached[1] } : {};
+};
+
 export const gallery: GalleryItem[] = galleryData.map((item) =>
   item.type === 'work'
     ? {
         src: `/gallery/works/${item.file}`,
         alt: `${item.title} — работа ученика изостудии Izo Studio в Жодино${item.technique ? `, ${item.technique}` : ''}`,
         caption: item.title,
+        ...sizeOf(item.file, `/gallery/works/${item.file}`),
       }
     : {
         src: item.src,
         href: item.href,
         alt: item.alt,
         caption: item.title,
+        ...sizeOf(item.src, item.src),
       },
 );
 

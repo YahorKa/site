@@ -24,8 +24,8 @@ const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0
       </p>
 
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="/zayavka" class="btn-primary">Записаться на занятие</a>
-        <a href="/gallery" class="btn-ghost">Смотреть работы</a>
+        <a href="/zayavka/" class="btn-primary">Записаться на занятие</a>
+        <a href="/gallery/" class="btn-ghost">Смотреть работы</a>
       </div>
 
       <dl class="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-line pt-6">
@@ -78,7 +78,7 @@ const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0
           <p class="eyebrow">Направления</p>
           <h2 class="mt-3 text-3xl sm:text-4xl">Чему учимся</h2>
         </div>
-        <a href="/services" class="text-sm text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink">
+        <a href="/services/" class="text-sm text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink">
           Все занятия и форматы →
         </a>
       </div>
@@ -130,7 +130,7 @@ const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0
             ))
           }
         </div>
-        <a href="/zayavka" class="btn-primary mt-7 w-full">Записаться</a>
+        <a href="/zayavka/" class="btn-primary mt-7 w-full">Записаться</a>
       </div>
     </div>
   </section>
@@ -154,7 +154,7 @@ const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0
         <p class="mt-2 text-sm text-muted">{teacher.role}</p>
         <p class="mt-6 max-w-xl text-base leading-relaxed text-muted">{teacher.bio}</p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href="/about" class="btn-ghost">Подробнее о студии</a>
+          <a href="/about/" class="btn-ghost">Подробнее о студии</a>
           <a href={teacher.instagram} target="_blank" rel="noopener noreferrer" class="btn-ghost">
             Работы в Instagram
           </a>
@@ -171,7 +171,7 @@ const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0
           <p class="eyebrow text-paper/50">Галерея</p>
           <h2 class="mt-3 text-3xl sm:text-4xl">Работы учеников</h2>
         </div>
-        <a href="/gallery" class="text-sm text-paper/60 underline decoration-paper/20 underline-offset-4 transition-colors hover:text-paper">
+        <a href="/gallery/" class="text-sm text-paper/60 underline decoration-paper/20 underline-offset-4 transition-colors hover:text-paper">
           Смотреть все работы →
         </a>
       </div>
@@ -184,7 +184,7 @@ const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0
             <div class="flex shrink-0 gap-3 pr-3" aria-hidden={copy === 1 ? 'true' : undefined}>
               {gallery.map((item) => (
                 <a
-                  href="/gallery"
+                  href="/gallery/"
                   tabindex={copy === 1 ? -1 : undefined}
                   draggable="false"
                   class="group shrink-0 overflow-hidden rounded-xl border border-paper/10"
@@ -238,7 +238,7 @@ const heroImages = [...uploaded.slice(-6), ...fromInstagram.slice(0, 2)].slice(0
         Оставьте заявку или позвоните: {site.phone}
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href="/zayavka" class="btn-primary">Оставить заявку</a>
+        <a href="/zayavka/" class="btn-primary">Оставить заявку</a>
         <a href={site.phoneHref} class="btn-ghost">Позвонить</a>
       </div>
     </div>
