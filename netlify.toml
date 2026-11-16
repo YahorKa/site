@@ -45,6 +45,11 @@
     Cache-Control = "public, max-age=2592000"
 
 [[headers]]
+  for = "/preview.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
   for = "/map-placeholder.png"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
