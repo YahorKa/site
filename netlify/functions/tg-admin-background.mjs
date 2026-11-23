@@ -45,12 +45,39 @@ const ghHeaders = {
   'content-type': 'application/json',
 };
 
+// Понятная причина вместо «Bad credentials»: по коду ответа не всегда ясно,
+// что случилось, а чинится это в панели Netlify.
+function ghHint(status) {
+  if (!TOKEN) {
+    return 'Не задана переменная GITHUB_TOKEN.\nДобавьте её в Netlify: Site configuration → Environment variables.';
+  }
+  if (status === 401) {
+    return 'Токен GitHub недействителен: отозван, просрочен или скопирован с ошибкой.\nВыпустите новый и обновите переменную GITHUB_TOKEN в Netlify.';
+  }
+  if (status === 403) {
+    return 'Токену не хватает прав. Нужен доступ к репозиторию с правом Contents: Read and write.';
+  }
+  if (status === 404) {
+    return `Репозиторий ${REPO} или ветка ${BRANCH} не найдены — проверьте GITHUB_REPO и GITHUB_BRANCH.`;
+  }
+  return '';
+}
+
+// Известные коды объясняем словами, незнакомые — показываем как есть,
+// иначе причину потом не восстановить.
+async function ghError(verb, path, res) {
+  const hint = ghHint(res.status);
+  if (hint) return hint;
+  const body = await res.text();
+  return `GitHub ${verb} ${path}: ${res.status} ${body}`;
+}
+
 async function ghGet(path) {
   const res = await fetch(`${API}/repos/${REPO}/contents/${encodeURI(path)}?ref=${BRANCH}`, {
     headers: ghHeaders,
   });
   if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`GitHub GET ${path}: ${res.status} ${await res.text()}`);
+  if (!res.ok) throw new Error(await ghError('GET', path, res));
   const data = await res.json();
   return { sha: data.sha, text: Buffer.from(data.content, 'base64').toString('utf8') };
 }
@@ -68,7 +95,7 @@ async function ghPut(path, content, message, sha) {
     headers: ghHeaders,
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`GitHub PUT ${path}: ${res.status} ${await res.text()}`);
+  if (!res.ok) throw new Error(await ghError('PUT', path, res));
   return res.json();
 }
 
